@@ -16,7 +16,7 @@
   --warn:#b45309;--warn-bg:#fffbeb;
   --radius:10px;--radius-lg:14px;
 }
-@media (prefers-color-scheme:dark){:root{
+@media(prefers-color-scheme:dark){:root{
   --bg:#111110;--surface:#1c1c1a;--surface2:#252523;
   --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
   --text:#f0ede8;--text2:#a09d97;--text3:#6b6860;
@@ -35,20 +35,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .login-logo{font-size:2.5rem;margin-bottom:.5rem;}
 .login-card h1{font-size:22px;font-weight:600;margin-bottom:.25rem;}
 .login-card .sub{font-size:14px;color:var(--text2);margin-bottom:2rem;}
-.login-card input{width:100%;padding:.65rem .85rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--surface2);color:var(--text);font-size:15px;outline:none;margin-bottom:.75rem;transition:border-color .15s;}
-.login-card input:focus{border-color:var(--accent);}
-.login-card input::placeholder{color:var(--text3);}
-.existing-members{margin-top:1.5rem;text-align:left;}
-.existing-label{font-size:12px;color:var(--text3);margin-bottom:.5rem;}
+.login-input{width:100%;padding:.65rem .85rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--surface2);color:var(--text);font-size:15px;outline:none;margin-bottom:.75rem;transition:border-color .15s;}
+.login-input:focus{border-color:var(--accent);}
+.login-input::placeholder{color:var(--text3);}
+.login-divider{display:flex;align-items:center;gap:.75rem;margin:.75rem 0;}
+.login-divider hr{flex:1;border:none;border-top:0.5px solid var(--border2);}
+.login-divider span{font-size:12px;color:var(--text3);}
+.member-list-login{text-align:left;margin-top:1.25rem;}
+.member-list-label{font-size:12px;color:var(--text3);margin-bottom:.5rem;}
 .member-chips{display:flex;flex-wrap:wrap;gap:6px;}
 .member-chip{padding:4px 12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;color:var(--text2);transition:background .15s,color .15s;}
 .member-chip:hover{background:var(--accent-bg);color:var(--accent-text);}
+.login-error{font-size:13px;color:var(--danger);margin-top:.5rem;min-height:18px;}
 
 /* BUTTONS */
 .btn-primary{width:100%;padding:.65rem;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s;}
 .btn-primary:hover{opacity:.9;}.btn-primary:active{transform:scale(.98);}.btn-primary:disabled{opacity:.5;cursor:not-allowed;}
 .btn-ghost{padding:4px 10px;background:transparent;border:0.5px solid var(--border2);border-radius:var(--radius);font-size:12px;color:var(--text2);cursor:pointer;transition:background .15s;}
 .btn-ghost:hover{background:var(--surface2);}
+.btn-danger{padding:4px 10px;background:transparent;border:0.5px solid var(--danger);border-radius:var(--radius);font-size:12px;color:var(--danger);cursor:pointer;transition:background .15s;}
+.btn-danger:hover{background:var(--danger-bg);}
 .btn-mark{font-size:11px;padding:2px 8px;border-radius:8px;border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;}
 .btn-mark:hover{background:var(--success-bg);color:var(--success);border-color:var(--success);}
 .btn-delete{font-size:11px;padding:2px 7px;border-radius:8px;border:0.5px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;}
@@ -63,6 +69,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .topbar-right{display:flex;align-items:center;gap:.6rem;}
 .avatar{width:32px;height:32px;border-radius:50%;background:var(--accent-bg);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;}
 .topbar-name{font-size:14px;font-weight:500;}
+.admin-badge{font-size:10px;background:var(--warn-bg);color:var(--warn);border:0.5px solid var(--warn);border-radius:6px;padding:1px 6px;font-weight:600;}
 
 /* TABS */
 .tabs{display:flex;gap:.35rem;padding:.85rem 1.25rem .5rem;overflow-x:auto;}
@@ -106,8 +113,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .form-row label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500;}
 .form-row input,.form-row select{width:100%;padding:.6rem .85rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-size:14px;outline:none;transition:border-color .15s;}
 .form-row input:focus,.form-row select:focus{border-color:var(--accent);}
-
-/* UPLOAD ZONE */
 .upload-zone{border:1.5px dashed var(--border2);border-radius:var(--radius);padding:1rem;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;position:relative;background:var(--bg);}
 .upload-zone:hover{border-color:var(--accent);background:var(--accent-bg);}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
@@ -120,7 +125,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .upload-preview-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .upload-preview-size{font-size:11px;color:var(--text3);}
 .upload-remove{font-size:12px;color:var(--danger);cursor:pointer;border:none;background:none;padding:2px 6px;flex-shrink:0;}
-
 .cat-grid{display:flex;flex-wrap:wrap;gap:6px;}
 .cat-btn{padding:5px 12px;font-size:13px;border-radius:var(--radius);border:0.5px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;}
 .cat-btn.active{background:var(--accent-bg);color:var(--accent-text);border-color:var(--accent);}
@@ -142,7 +146,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .history-left h4{font-size:13px;font-weight:500;margin-bottom:2px;}
 .history-left p{font-size:12px;color:var(--text3);}
 
-/* HOUSE SUMMARY + MEMBER DETAIL */
+/* HOUSE SUMMARY */
 .house-member-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color .15s;}
 .house-member-card:hover{border-color:var(--accent);}
 .house-member-top{display:flex;align-items:center;justify-content:space-between;}
@@ -163,6 +167,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .detail-expense-name{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .detail-expense-date{font-size:11px;color:var(--text3);}
 .detail-none{font-size:13px;color:var(--text3);text-align:center;padding:.75rem 0;}
+
+/* ADMIN PANEL */
+.admin-panel{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;}
+.admin-panel-title{font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+.admin-member-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:0.5px solid var(--border);}
+.admin-member-row:last-child{border-bottom:none;}
+.admin-member-info{display:flex;align-items:center;gap:.6rem;}
+.admin-member-name{font-size:14px;font-weight:500;}
+.add-member-row{display:flex;gap:.5rem;margin-top:.85rem;}
+.add-member-row input{flex:1;padding:.55rem .85rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-size:14px;outline:none;transition:border-color .15s;}
+.add-member-row input:focus{border-color:var(--accent);}
+.add-member-row button{padding:.55rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity .15s;}
+.add-member-row button:hover{opacity:.9;}
+
+/* DANGER ZONE */
+.danger-zone{background:var(--surface);border:0.5px solid var(--danger);border-radius:var(--radius-lg);padding:1.25rem;margin-top:1.25rem;}
+.danger-zone-title{font-size:14px;font-weight:600;color:var(--danger);margin-bottom:.35rem;}
+.danger-zone-desc{font-size:13px;color:var(--text2);margin-bottom:1rem;}
+.danger-zone-actions{display:flex;flex-wrap:wrap;gap:.6rem;}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:50;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .2s;}
@@ -243,11 +266,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="login-logo">🏠</div>
     <h1>HouseSplit</h1>
     <p class="sub">Shared expenses, made simple</p>
-    <input type="text" id="username-input" placeholder="Your name…" maxlength="24" autocomplete="off"/>
-    <button class="btn-primary" id="login-btn" onclick="handleLogin()">Enter house →</button>
-    <div class="existing-members" id="existing-members-wrap" style="display:none">
-      <div class="existing-label">Housemates already here:</div>
-      <div class="member-chips" id="member-chips"></div>
+
+    <!-- ADMIN LOGIN SECTION -->
+    <div id="admin-login-section">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:.6rem;text-align:left;font-weight:500;">Admin login</div>
+      <input class="login-input" type="text" id="admin-user-input" placeholder="Admin username" autocomplete="off"/>
+      <input class="login-input" type="password" id="admin-pass-input" placeholder="Admin password"/>
+      <button class="btn-primary" id="admin-login-btn" onclick="handleAdminLogin()">Login as admin</button>
+      <div class="login-error" id="admin-error"></div>
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="login-divider" id="login-divider-el" style="display:none">
+      <hr/><span>or sign in as a member</span><hr/>
+    </div>
+
+    <!-- MEMBER LOGIN SECTION -->
+    <div id="member-login-section" style="display:none">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:.6rem;text-align:left;font-weight:500;">Members</div>
+      <div class="member-chips" id="member-login-chips"></div>
+      <div class="login-error" id="member-error" style="margin-top:.5rem"></div>
     </div>
   </div>
 </div>
@@ -259,15 +297,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="topbar-right">
       <div class="avatar" id="top-avatar"></div>
       <span class="topbar-name" id="top-name"></span>
+      <span class="admin-badge" id="admin-badge" style="display:none">ADMIN</span>
       <button class="btn-ghost" onclick="handleLogout()">Sign out</button>
     </div>
   </div>
-  <div class="tabs">
+
+  <div class="tabs" id="main-tabs">
     <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
     <button class="tab" onclick="switchTab('add')">+ Add expense</button>
     <button class="tab" onclick="switchTab('mine')">My balance</button>
     <button class="tab" onclick="switchTab('house')">House summary</button>
+    <!-- Admin tab injected if admin -->
   </div>
+
   <div class="content">
 
     <!-- DASHBOARD -->
@@ -283,29 +325,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <!-- ADD EXPENSE -->
     <div id="tab-add" style="display:none">
       <div class="form-card">
-        <div class="form-row">
-          <label>Category</label>
-          <div class="cat-grid" id="cat-grid"></div>
-        </div>
-        <div class="form-row">
-          <label>Description</label>
-          <input type="text" id="desc-input" placeholder="e.g. March electric bill" maxlength="60"/>
-        </div>
-        <div class="form-row">
-          <label>Total amount ($)</label>
-          <input type="number" id="amount-input" placeholder="0.00" min="0.01" step="0.01" oninput="updatePreview()"/>
-        </div>
-        <div class="form-row">
-          <label>Paid by</label>
-          <select id="paidby-select"></select>
-        </div>
+        <div class="form-row"><label>Category</label><div class="cat-grid" id="cat-grid"></div></div>
+        <div class="form-row"><label>Description</label><input type="text" id="desc-input" placeholder="e.g. March electric bill" maxlength="60"/></div>
+        <div class="form-row"><label>Total amount ($)</label><input type="number" id="amount-input" placeholder="0.00" min="0.01" step="0.01" oninput="updatePreview()"/></div>
+        <div class="form-row"><label>Paid by</label><select id="paidby-select"></select></div>
         <div class="form-row">
           <label>Split among</label>
           <div class="member-toggles" id="member-toggles"></div>
           <div class="split-preview" id="split-preview" style="display:none"></div>
         </div>
         <div class="form-row">
-          <label>Attach receipt or proof of spending (optional)</label>
+          <label>Attach receipt (optional)</label>
           <div class="upload-zone">
             <input type="file" id="expense-file-input" accept="image/*,.pdf" onchange="handleExpenseFile(event)"/>
             <div class="upload-zone-icon">🧾</div>
@@ -341,14 +371,48 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
     <!-- HOUSE SUMMARY -->
     <div id="tab-house" style="display:none">
-      <div style="font-size:13px;color:var(--text3);margin-bottom:.85rem">Tap any member to see their full breakdown — what they owe, what they've paid, and every expense they're part of.</div>
+      <div style="font-size:13px;color:var(--text3);margin-bottom:.85rem">Tap any member to see their full breakdown.</div>
       <div id="house-list"></div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="tab-admin" style="display:none">
+
+      <!-- Member management -->
+      <div class="admin-panel">
+        <div class="admin-panel-title">👥 Manage members</div>
+        <div id="admin-member-list"></div>
+        <div class="add-member-row">
+          <input type="text" id="new-member-input" placeholder="New member name…" maxlength="24" autocomplete="off"/>
+          <button onclick="adminAddMember()">Add member</button>
+        </div>
+      </div>
+
+      <!-- Danger zone -->
+      <div class="danger-zone">
+        <div class="danger-zone-title">⚠️ Danger zone</div>
+        <div class="danger-zone-desc">These actions are permanent and cannot be undone. Use with caution.</div>
+        <div class="danger-zone-actions">
+          <button class="btn-danger" onclick="adminResetExpenses()">🗑 Delete all expenses</button>
+          <button class="btn-danger" onclick="adminResetAll()">💥 Reset everything (expenses + members)</button>
+        </div>
+      </div>
+
     </div>
 
   </div>
 </div>
 
 <script type="module">
+// ================================================================
+//  ⚙️  ADMIN CREDENTIALS — change these before deploying
+//  Username and password are checked client-side only.
+//  For stronger security, use Firebase Authentication instead.
+// ================================================================
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "house2024";
+// ================================================================
+
 const firebaseConfig = {
   apiKey: "AIzaSyAJ7Qz7Jm9rox5Bm7D9WaNbPgQG4gtnI-4",
   authDomain: "homie-bf435.firebaseapp.com",
@@ -367,7 +431,9 @@ import { getDatabase, ref, onValue, set, update, push, remove, get }
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
+// ── State ──────────────────────────────────────────────────────
 let currentUser     = localStorage.getItem('hs_user') || null;
+let isAdmin         = localStorage.getItem('hs_admin') === '1';
 let members         = [];
 let expenses        = [];
 let modalExpenseId  = null;
@@ -378,6 +444,7 @@ let expenseFileB64  = null;
 const CATS   = ['Electric','Rent','Gas','Water','Internet','Groceries','Trash','Other'];
 const COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4','#f97316'];
 
+// ── Helpers ────────────────────────────────────────────────────
 function fmt(n){ return '$'+Number(n).toFixed(2); }
 function initials(n){ return n.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
 function colorFor(name){ let h=0; for(let c of name) h=(h*31+c.charCodeAt(0))&0xffffffff; return COLORS[Math.abs(h)%COLORS.length]; }
@@ -386,9 +453,10 @@ function hideLoading(){ document.getElementById('loading-overlay').style.display
 function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
 function fileToB64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(file); }); }
 function fmtSize(b){ return b<1024?b+'B':b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB'; }
-function sid(name){ return 'hm-'+name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-]/g,''); }
+function mkid(name){ return 'hm-'+name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-]/g,''); }
+function memberKey(name){ return name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,''); }
 
-/* ── File handlers ── */
+// ── File handlers ──────────────────────────────────────────────
 window.handleProofFile = async function(e){
   const f=e.target.files[0]; if(!f) return;
   if(f.size>4*1024*1024){ toast('File too large — max 4MB'); return; }
@@ -416,13 +484,18 @@ window.clearExpenseFile = function(){
   document.getElementById('expense-preview').style.display='none';
 };
 
-/* ── Lightbox ── */
+// ── Lightbox ───────────────────────────────────────────────────
 window.openLightbox = function(src){ document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').classList.add('open'); };
 window.closeLightbox = function(){ document.getElementById('lightbox').classList.remove('open'); };
 
-/* ── Firebase listeners ── */
+// ── Firebase listeners ─────────────────────────────────────────
 function startListening(){
-  onValue(ref(db,'members'),snap=>{ members=Object.values(snap.val()||{}); renderLoginChips(); if(currentUser) renderAll(); });
+  onValue(ref(db,'members'),snap=>{
+    members=Object.values(snap.val()||{});
+    renderLoginMemberChips();
+    if(currentUser) renderAll();
+    if(isAdmin) renderAdminPanel();
+  });
   onValue(ref(db,'expenses'),snap=>{
     const val=snap.val()||{};
     expenses=Object.entries(val).map(([id,e])=>({...e,id}));
@@ -431,61 +504,128 @@ function startListening(){
   });
 }
 
-/* ── Auth ── */
-window.handleLogin = async function(){
-  const name=document.getElementById('username-input').value.trim();
-  if(!name){ toast('Please enter your name'); return; }
-  const btn=document.getElementById('login-btn'); btn.disabled=true; btn.textContent='Joining…';
-  const snap=await get(ref(db,'members')); const existing=snap.val()||{};
-  if(!Object.values(existing).some(m=>m.name.toLowerCase()===name.toLowerCase())){
-    await set(ref(db,`members/${name.toLowerCase().replace(/\s+/g,'-')}`),{name});
+// ── Login screen setup ─────────────────────────────────────────
+function renderLoginMemberChips(){
+  const chips=document.getElementById('member-login-chips');
+  const section=document.getElementById('member-login-section');
+  const divider=document.getElementById('login-divider-el');
+  if(!members.length){
+    section.style.display='none'; divider.style.display='none'; return;
   }
-  currentUser=name; localStorage.setItem('hs_user',name);
-  showApp(); btn.disabled=false; btn.textContent='Enter house →';
-};
-window.handleLogout = function(){
-  currentUser=null; localStorage.removeItem('hs_user');
-  showScreen('login-screen'); document.getElementById('username-input').value='';
-};
-function showApp(){
-  showScreen('main-screen');
-  document.getElementById('top-avatar').textContent=initials(currentUser);
-  document.getElementById('top-avatar').style.background=colorFor(currentUser)+'22';
-  document.getElementById('top-avatar').style.color=colorFor(currentUser);
-  document.getElementById('top-name').textContent=currentUser;
-  resetForm(); renderAll();
+  section.style.display='block'; divider.style.display='flex';
+  chips.innerHTML=members.map(m=>
+    `<span class="member-chip" onclick="handleMemberLogin('${m.name}')">${m.name}</span>`
+  ).join('');
 }
 
-/* ── Tabs ── */
+// ── Admin login ────────────────────────────────────────────────
+window.handleAdminLogin = function(){
+  const u=document.getElementById('admin-user-input').value.trim();
+  const p=document.getElementById('admin-pass-input').value;
+  const err=document.getElementById('admin-error');
+  if(u!==ADMIN_USERNAME||p!==ADMIN_PASSWORD){
+    err.textContent='Incorrect username or password.'; return;
+  }
+  err.textContent='';
+  currentUser='Admin'; isAdmin=true;
+  localStorage.setItem('hs_user','Admin');
+  localStorage.setItem('hs_admin','1');
+  showApp();
+};
+document.getElementById('admin-pass-input').addEventListener('keydown',e=>{ if(e.key==='Enter') handleAdminLogin(); });
+
+// ── Member login (click chip) ──────────────────────────────────
+window.handleMemberLogin = function(name){
+  // verify name is still in the members list
+  if(!members.some(m=>m.name===name)){
+    document.getElementById('member-error').textContent='Member not found. Ask your admin to add you.';
+    return;
+  }
+  currentUser=name; isAdmin=false;
+  localStorage.setItem('hs_user',name);
+  localStorage.removeItem('hs_admin');
+  showApp();
+};
+
+// ── Logout ─────────────────────────────────────────────────────
+window.handleLogout = function(){
+  currentUser=null; isAdmin=false;
+  localStorage.removeItem('hs_user'); localStorage.removeItem('hs_admin');
+  document.getElementById('admin-user-input').value='';
+  document.getElementById('admin-pass-input').value='';
+  document.getElementById('admin-error').textContent='';
+  document.getElementById('member-error').textContent='';
+  showScreen('login-screen');
+};
+
+// ── Show app ───────────────────────────────────────────────────
+function showApp(){
+  showScreen('main-screen');
+  const name=isAdmin?'Admin':currentUser;
+  document.getElementById('top-avatar').textContent=initials(name);
+  document.getElementById('top-avatar').style.background=isAdmin?'var(--warn-bg)':colorFor(currentUser)+'22';
+  document.getElementById('top-avatar').style.color=isAdmin?'var(--warn)':colorFor(currentUser);
+  document.getElementById('top-name').textContent=name;
+  document.getElementById('admin-badge').style.display=isAdmin?'inline-flex':'none';
+
+  // inject or remove admin tab
+  const existingAdminTab=document.getElementById('admin-tab-btn');
+  if(isAdmin&&!existingAdminTab){
+    const btn=document.createElement('button');
+    btn.className='tab'; btn.id='admin-tab-btn'; btn.textContent='⚙️ Admin';
+    btn.onclick=()=>switchTab('admin');
+    document.getElementById('main-tabs').appendChild(btn);
+  } else if(!isAdmin&&existingAdminTab){
+    existingAdminTab.remove();
+  }
+
+  // hide "mine" tab for admin (admin is not a real housemate)
+  document.querySelectorAll('.tab').forEach(t=>{
+    if(t.textContent==='My balance') t.style.display=isAdmin?'none':'';
+  });
+
+  resetForm();
+  switchTab('dashboard');
+}
+
+// ── Tabs ───────────────────────────────────────────────────────
 let activeTab='dashboard';
 window.switchTab = function(t){
   activeTab=t;
-  ['dashboard','add','mine','house'].forEach(x=>document.getElementById('tab-'+x).style.display=x===t?'block':'none');
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['dashboard','add','mine','house'][i]===t));
-  if(t==='add') renderAddForm();
+  ['dashboard','add','mine','house','admin'].forEach(x=>{
+    const el=document.getElementById('tab-'+x);
+    if(el) el.style.display=x===t?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach(el=>{
+    const map={'Dashboard':'dashboard','+ Add expense':'add','My balance':'mine','House summary':'house','⚙️ Admin':'admin'};
+    el.classList.toggle('active',map[el.textContent]===t);
+  });
+  if(t==='add')   renderAddForm();
+  if(t==='admin') renderAdminPanel();
   renderAll();
 };
+
 function renderAll(){
   if(activeTab==='dashboard') renderDashboard();
-  if(activeTab==='mine')      renderMine();
+  if(activeTab==='mine'&&!isAdmin) renderMine();
   if(activeTab==='house')     renderHouse();
 }
-function renderLoginChips(){
-  const wrap=document.getElementById('existing-members-wrap');
-  if(!members.length){ wrap.style.display='none'; return; }
-  wrap.style.display='block';
-  document.getElementById('member-chips').innerHTML=members.map(m=>`<span class="member-chip" onclick="document.getElementById('username-input').value='${m.name}'">${m.name}</span>`).join('');
-}
 
-/* ── Dashboard ── */
+// ── Dashboard ──────────────────────────────────────────────────
 function renderDashboard(){
   const me=currentUser; let myOwed=0,myPaid=0,houseTotal=0;
   expenses.forEach(e=>{ houseTotal+=e.total; const s=(e.splits||[]).find(s=>s.name===me); if(s){ s.paid?myPaid+=s.amount:myOwed+=s.amount; } });
-  document.getElementById('metric-grid').innerHTML=`
-    <div class="metric"><div class="metric-label">You owe</div><div class="metric-val danger">${fmt(myOwed)}</div></div>
-    <div class="metric"><div class="metric-label">You've paid</div><div class="metric-val success">${fmt(myPaid)}</div></div>
-    <div class="metric"><div class="metric-label">House total</div><div class="metric-val accent">${fmt(houseTotal)}</div></div>
-    <div class="metric"><div class="metric-label">Expenses</div><div class="metric-val">${expenses.length}</div></div>`;
+
+  const metricsHtml=isAdmin
+    ? `<div class="metric"><div class="metric-label">House total</div><div class="metric-val accent">${fmt(houseTotal)}</div></div>
+       <div class="metric"><div class="metric-label">Expenses</div><div class="metric-val">${expenses.length}</div></div>
+       <div class="metric"><div class="metric-label">Members</div><div class="metric-val">${members.length}</div></div>`
+    : `<div class="metric"><div class="metric-label">You owe</div><div class="metric-val danger">${fmt(myOwed)}</div></div>
+       <div class="metric"><div class="metric-label">You've paid</div><div class="metric-val success">${fmt(myPaid)}</div></div>
+       <div class="metric"><div class="metric-label">House total</div><div class="metric-val accent">${fmt(houseTotal)}</div></div>
+       <div class="metric"><div class="metric-label">Expenses</div><div class="metric-val">${expenses.length}</div></div>`;
+
+  document.getElementById('metric-grid').innerHTML=metricsHtml;
   document.getElementById('expense-count').textContent=expenses.length+' total';
   const list=document.getElementById('all-expenses-list');
   if(!expenses.length){ list.innerHTML=`<div class="empty"><div class="empty-icon">🧾</div>No expenses yet — add one!</div>`; return; }
@@ -495,8 +635,8 @@ function renderDashboard(){
 function renderExpenseCard(e){
   const me=currentUser;
   const splits=(e.splits||[]).map(s=>{
-    const canMark=!s.paid&&(s.name===me||e.paidBy===me);
-    const isMe=s.name===me;
+    const canMark=!s.paid&&(s.name===me||e.paidBy===me||isAdmin);
+    const isMe=!isAdmin&&s.name===me;
     const proofEl=s.proofImg
       ?`<img class="proof-mini" src="${s.proofImg}" onclick="openLightbox('${s.proofImg}')" title="View proof"/>`
       :(s.proofNote&&s.paid?`<span title="${s.proofNote}" style="cursor:help;font-size:12px">📝</span>`:'');
@@ -510,15 +650,14 @@ function renderExpenseCard(e){
       </div>
     </div>`;
   }).join('');
-  // Delete button only for who added it (addedBy), fallback to paidBy for older entries
-  const canDelete=(e.addedBy||e.paidBy)===me;
+  const canDelete=isAdmin||(e.addedBy||e.paidBy)===me;
   const receiptRow=e.receiptImg?`<div class="receipt-row"><img class="receipt-thumb" src="${e.receiptImg}" onclick="openLightbox('${e.receiptImg}')" title="View receipt"/><span class="receipt-label">Receipt attached — tap to view</span></div>`:'';
   return `<div class="expense-card">
     <div class="expense-top">
       <div>
         <div class="expense-cat-badge">${e.category}</div>
         <div class="expense-desc">${e.desc}</div>
-        <div class="expense-meta">Paid by ${e.paidBy} · ${e.date}</div>
+        <div class="expense-meta">Paid by ${e.paidBy} · ${e.date}${e.addedBy?' · added by '+e.addedBy:''}</div>
       </div>
       <div style="text-align:right">
         <div class="expense-amount">${fmt(e.total)}</div>
@@ -530,7 +669,7 @@ function renderExpenseCard(e){
   </div>`;
 }
 
-/* ── My Balance ── */
+// ── My Balance ─────────────────────────────────────────────────
 function renderMine(){
   const me=currentUser; let owed=0,paid=0; const mine=[];
   expenses.forEach(e=>{ const s=(e.splits||[]).find(s=>s.name===me); if(s){ s.paid?paid+=s.amount:owed+=s.amount; mine.push({e,s}); } });
@@ -540,9 +679,8 @@ function renderMine(){
   const list=document.getElementById('my-history-list');
   if(!mine.length){ list.innerHTML=`<div class="empty"><div class="empty-icon">💸</div>You're not in any expenses yet.</div>`; return; }
   list.innerHTML=mine.map(({e,s})=>{
-    const proofEl=s.proofImg
-      ?`<img class="proof-mini" src="${s.proofImg}" onclick="openLightbox('${s.proofImg}')" title="View proof"/>`
-      :(s.proofNote&&s.paid?`<span title="${s.proofNote}" style="cursor:help;font-size:12px">📝</span>`:'');
+    const proofEl=s.proofImg?`<img class="proof-mini" src="${s.proofImg}" onclick="openLightbox('${s.proofImg}')" title="View proof"/>`:
+                  (s.proofNote&&s.paid?`<span title="${s.proofNote}" style="cursor:help;font-size:12px">📝</span>`:'');
     return `<div class="history-row">
       <div class="history-left">
         <h4>${e.category} — ${e.desc}</h4>
@@ -559,23 +697,16 @@ function renderMine(){
   }).join('');
 }
 
-/* ── House Summary with expandable member detail ── */
+// ── House Summary ──────────────────────────────────────────────
 function renderHouse(){
   const bal={};
   members.forEach(m=>{ bal[m.name]={owed:0,paid:0,rows:[]}; });
-  expenses.forEach(e=>{
-    (e.splits||[]).forEach(s=>{
-      if(!bal[s.name]) bal[s.name]={owed:0,paid:0,rows:[]};
-      s.paid?bal[s.name].paid+=s.amount:bal[s.name].owed+=s.amount;
-      bal[s.name].rows.push({e,s});
-    });
-  });
+  expenses.forEach(e=>{ (e.splits||[]).forEach(s=>{ if(!bal[s.name]) bal[s.name]={owed:0,paid:0,rows:[]}; s.paid?bal[s.name].paid+=s.amount:bal[s.name].owed+=s.amount; bal[s.name].rows.push({e,s}); }); });
   const list=document.getElementById('house-list');
   if(!members.length){ list.innerHTML=`<div class="empty">No members yet.</div>`; return; }
   list.innerHTML=members.map(m=>{
-    const b=bal[m.name]||{owed:0,paid:0,rows:[]};
-    const col=colorFor(m.name); const isMe=m.name===currentUser;
-    const id=sid(m.name); const total=b.owed+b.paid;
+    const b=bal[m.name]||{owed:0,paid:0,rows:[]}; const col=colorFor(m.name);
+    const isMe=!isAdmin&&m.name===currentUser; const id=mkid(m.name); const total=b.owed+b.paid;
     const detailRows=b.rows.map(({e,s})=>`
       <div class="detail-expense-row">
         <div class="detail-expense-left">
@@ -604,22 +735,10 @@ function renderHouse(){
       </div>
       <div class="member-detail" id="${id}">
         <div class="detail-grid">
-          <div class="detail-metric">
-            <div class="detail-metric-label">Still owes</div>
-            <div class="detail-metric-val" style="color:${b.owed>0?'var(--danger)':'var(--success)'}">${fmt(b.owed)}</div>
-          </div>
-          <div class="detail-metric">
-            <div class="detail-metric-label">Total paid</div>
-            <div class="detail-metric-val" style="color:var(--success)">${fmt(b.paid)}</div>
-          </div>
-          <div class="detail-metric">
-            <div class="detail-metric-label">Total share</div>
-            <div class="detail-metric-val">${fmt(total)}</div>
-          </div>
-          <div class="detail-metric">
-            <div class="detail-metric-label">% paid</div>
-            <div class="detail-metric-val">${total>0?Math.round(b.paid/total*100):100}%</div>
-          </div>
+          <div class="detail-metric"><div class="detail-metric-label">Still owes</div><div class="detail-metric-val" style="color:${b.owed>0?'var(--danger)':'var(--success)'}">${fmt(b.owed)}</div></div>
+          <div class="detail-metric"><div class="detail-metric-label">Total paid</div><div class="detail-metric-val" style="color:var(--success)">${fmt(b.paid)}</div></div>
+          <div class="detail-metric"><div class="detail-metric-label">Total share</div><div class="detail-metric-val">${fmt(total)}</div></div>
+          <div class="detail-metric"><div class="detail-metric-label">% paid</div><div class="detail-metric-val">${total>0?Math.round(b.paid/total*100):100}%</div></div>
         </div>
         ${detailRows||`<div class="detail-none">Not included in any expenses yet.</div>`}
       </div>
@@ -628,12 +747,66 @@ function renderHouse(){
 }
 window.toggleDetail = function(id){ const el=document.getElementById(id); if(el) el.classList.toggle('open'); };
 
-/* ── Add expense form ── */
+// ── Admin panel ────────────────────────────────────────────────
+function renderAdminPanel(){
+  const list=document.getElementById('admin-member-list');
+  if(!members.length){
+    list.innerHTML=`<div class="detail-none" style="padding:.5rem 0">No members yet. Add one below.</div>`;
+    return;
+  }
+  list.innerHTML=members.map(m=>{
+    const col=colorFor(m.name);
+    return `<div class="admin-member-row">
+      <div class="admin-member-info">
+        <div class="house-avatar" style="width:30px;height:30px;font-size:12px;background:${col}22;color:${col}">${initials(m.name)}</div>
+        <span class="admin-member-name">${m.name}</span>
+      </div>
+      <button class="btn-delete" onclick="adminRemoveMember('${m.name}')">Remove</button>
+    </div>`;
+  }).join('');
+}
+
+window.adminAddMember = async function(){
+  const input=document.getElementById('new-member-input');
+  const name=input.value.trim();
+  if(!name){ toast('Enter a name'); return; }
+  if(members.some(m=>m.name.toLowerCase()===name.toLowerCase())){ toast('Member already exists'); return; }
+  await set(ref(db,`members/${memberKey(name)}`),{name});
+  toast(`${name} added ✓`);
+  input.value='';
+};
+document.getElementById('new-member-input').addEventListener('keydown',e=>{ if(e.key==='Enter') adminAddMember(); });
+
+window.adminRemoveMember = async function(name){
+  if(!confirm(`Remove ${name} from the house? They will no longer be able to log in.`)) return;
+  const snap=await get(ref(db,'members'));
+  const val=snap.val()||{};
+  const key=Object.entries(val).find(([k,v])=>v.name===name)?.[0];
+  if(key) await remove(ref(db,`members/${key}`));
+  toast(`${name} removed`);
+};
+
+window.adminResetExpenses = async function(){
+  if(!confirm('Delete ALL expenses? This cannot be undone.')) return;
+  await set(ref(db,'expenses'),null);
+  toast('All expenses deleted');
+};
+
+window.adminResetAll = async function(){
+  const confirmed=prompt('Type RESET to confirm wiping all data (expenses + members):');
+  if(confirmed!=='RESET'){ toast('Cancelled'); return; }
+  await set(ref(db,'expenses'),null);
+  await set(ref(db,'members'),null);
+  toast('All data reset');
+  handleLogout();
+};
+
+// ── Add expense form ───────────────────────────────────────────
 let selCat='Other', selMembers=[];
 function renderAddForm(){
-  selMembers=selMembers.length?selMembers:[currentUser];
+  selMembers=selMembers.length?selMembers:(isAdmin?[]:([currentUser]));
   document.getElementById('cat-grid').innerHTML=CATS.map(c=>`<button class="cat-btn ${c===selCat?'active':''}" onclick="selectCat('${c}')">${c}</button>`).join('');
-  document.getElementById('paidby-select').innerHTML=members.map(m=>`<option value="${m.name}" ${m.name===currentUser?'selected':''}>${m.name}</option>`).join('');
+  document.getElementById('paidby-select').innerHTML=members.map(m=>`<option value="${m.name}" ${!isAdmin&&m.name===currentUser?'selected':''}>${m.name}</option>`).join('');
   renderToggles();
 }
 window.selectCat=function(c){
@@ -658,7 +831,7 @@ window.updatePreview=function(){
   prev.innerHTML=`Each of <strong>${selMembers.length}</strong> selected pays <strong>$${(amt/selMembers.length).toFixed(2)}</strong> · ${selMembers.join(', ')}`;
 };
 window.resetForm=function(){
-  selCat='Other'; selMembers=[currentUser];
+  selCat='Other'; selMembers=isAdmin?[]:[currentUser];
   ['desc-input','amount-input'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('split-preview').style.display='none';
   clearExpenseFile(); renderAddForm();
@@ -673,7 +846,7 @@ window.submitExpense=async function(){
   const share=amount/selMembers.length;
   const expense={
     category:selCat, desc, total:amount, paidBy,
-    addedBy:currentUser,
+    addedBy:isAdmin?'Admin':currentUser,
     date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
     ts:Date.now(),
     splits:selMembers.map(name=>({name,amount:share,paid:name===paidBy}))
@@ -683,7 +856,7 @@ window.submitExpense=async function(){
   catch(err){ toast('Error saving — check Firebase config'); console.error(err); }
 };
 
-/* ── Mark Paid Modal ── */
+// ── Mark Paid Modal ────────────────────────────────────────────
 window.openPaidModal=function(expenseId,memberName,amtStr){
   modalExpenseId=expenseId; modalMemberName=memberName;
   document.getElementById('modal-sub').textContent=`Marking ${memberName} as paid — ${amtStr}`;
@@ -691,10 +864,7 @@ window.openPaidModal=function(expenseId,memberName,amtStr){
   clearProofFile();
   document.getElementById('paid-modal').classList.add('open');
 };
-window.closeModal=function(){
-  document.getElementById('paid-modal').classList.remove('open');
-  modalExpenseId=null; modalMemberName=null;
-};
+window.closeModal=function(){ document.getElementById('paid-modal').classList.remove('open'); modalExpenseId=null; modalMemberName=null; };
 document.getElementById('paid-modal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
 window.confirmMarkPaid=async function(){
   if(!modalExpenseId||!modalMemberName) return;
@@ -711,21 +881,23 @@ window.confirmMarkPaid=async function(){
   btn.disabled=false; btn.textContent='Confirm paid';
 };
 
-/* ── Delete (only who added it) ── */
+// ── Delete expense ─────────────────────────────────────────────
 window.deleteExpense=async function(expenseId){
   if(!confirm('Delete this expense? This cannot be undone.')) return;
   try { await remove(ref(db,`expenses/${expenseId}`)); toast('Expense deleted'); }
   catch(err){ toast('Error deleting'); }
 };
 
-/* ── Boot ── */
+// ── Boot ───────────────────────────────────────────────────────
 startListening();
 setTimeout(()=>{
   hideLoading();
-  if(currentUser&&members.some(m=>m.name===currentUser)){ showApp(); }
-  else { currentUser=null; localStorage.removeItem('hs_user'); showScreen('login-screen'); }
-},1200);
-document.getElementById('username-input').addEventListener('keydown',e=>{ if(e.key==='Enter') handleLogin(); });
+  const savedUser=localStorage.getItem('hs_user');
+  const savedAdmin=localStorage.getItem('hs_admin')==='1';
+  if(savedAdmin){ currentUser='Admin'; isAdmin=true; showApp(); }
+  else if(savedUser&&members.some(m=>m.name===savedUser)){ currentUser=savedUser; isAdmin=false; showApp(); }
+  else { currentUser=null; isAdmin=false; localStorage.removeItem('hs_user'); localStorage.removeItem('hs_admin'); showScreen('login-screen'); }
+},1400);
 </script>
 </body>
 </html>
