@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>HouseSplit</title>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
   --bg:#f7f6f3;--surface:#ffffff;--surface2:#f0ede8;
   --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.15);
   --text:#1a1a18;--text2:#6b6860;--text3:#9e9c96;
@@ -28,63 +28,67 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.5;}
 .screen{display:none;}.screen.active{display:block;}
 
-/* LOGIN */
-#login-screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:2rem 1rem;}
+/* ── LOGIN ── */
+#login-screen{min-height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;}
 #login-screen.active{display:flex;}
-.login-card{background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:2.5rem 2rem;width:100%;max-width:380px;text-align:center;}
-.login-logo{font-size:2.5rem;margin-bottom:.5rem;}
-.login-card h1{font-size:22px;font-weight:600;margin-bottom:.25rem;}
-.login-card .sub{font-size:14px;color:var(--text2);margin-bottom:2rem;}
-.login-input{width:100%;padding:.65rem .85rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--surface2);color:var(--text);font-size:15px;outline:none;margin-bottom:.75rem;transition:border-color .15s;}
-.login-input:focus{border-color:var(--accent);}
-.login-input::placeholder{color:var(--text3);}
-.login-divider{display:flex;align-items:center;gap:.75rem;margin:.75rem 0;}
-.login-divider hr{flex:1;border:none;border-top:0.5px solid var(--border2);}
-.login-divider span{font-size:12px;color:var(--text3);}
-.member-list-login{text-align:left;margin-top:1.25rem;}
-.member-list-label{font-size:12px;color:var(--text3);margin-bottom:.5rem;}
-.member-chips{display:flex;flex-wrap:wrap;gap:6px;}
-.member-chip{padding:4px 12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;color:var(--text2);transition:background .15s,color .15s;}
-.member-chip:hover{background:var(--accent-bg);color:var(--accent-text);}
-.login-error{font-size:13px;color:var(--danger);margin-top:.5rem;min-height:18px;}
+.login-logo{font-size:2.8rem;margin-bottom:.4rem;}
+.login-title{font-size:22px;font-weight:700;margin-bottom:.25rem;}
+.login-sub{font-size:14px;color:var(--text2);margin-bottom:2rem;}
+.login-members-grid{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;max-width:420px;width:100%;}
+.login-member-btn{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;padding:12px 14px;border-radius:var(--radius-lg);border:0.5px solid var(--border);background:var(--surface);transition:all .15s;min-width:90px;}
+.login-member-btn:hover{border-color:var(--accent);background:var(--accent-bg);}
+.login-member-avatar{width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid var(--border2);}
+.login-member-avatar-fallback{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;border:2px solid var(--border2);}
+.login-member-name{font-size:13px;font-weight:500;color:var(--text);text-align:center;}
+.login-empty{font-size:14px;color:var(--text3);text-align:center;padding:2rem 1rem;}
+.admin-trigger{margin-top:2.5rem;font-size:13px;color:var(--text3);cursor:pointer;opacity:.4;transition:opacity .2s;user-select:none;}
+.admin-trigger:hover{opacity:.85;}
+.admin-box{margin-top:1rem;background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.25rem;width:100%;max-width:320px;display:none;}
+.admin-box.open{display:block;}
+.admin-box-title{font-size:13px;font-weight:600;margin-bottom:.75rem;color:var(--text2);}
+.admin-input{width:100%;padding:.55rem .8rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-size:14px;outline:none;margin-bottom:.6rem;transition:border-color .15s;}
+.admin-input:focus{border-color:var(--accent);}
+.admin-input::placeholder{color:var(--text3);}
+.login-error{font-size:12px;color:var(--danger);min-height:16px;margin-top:.25rem;}
 
-/* BUTTONS */
+/* ── BUTTONS ── */
 .btn-primary{width:100%;padding:.65rem;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s;}
 .btn-primary:hover{opacity:.9;}.btn-primary:active{transform:scale(.98);}.btn-primary:disabled{opacity:.5;cursor:not-allowed;}
 .btn-ghost{padding:4px 10px;background:transparent;border:0.5px solid var(--border2);border-radius:var(--radius);font-size:12px;color:var(--text2);cursor:pointer;transition:background .15s;}
 .btn-ghost:hover{background:var(--surface2);}
-.btn-danger{padding:4px 10px;background:transparent;border:0.5px solid var(--danger);border-radius:var(--radius);font-size:12px;color:var(--danger);cursor:pointer;transition:background .15s;}
-.btn-danger:hover{background:var(--danger-bg);}
+.btn-danger-sm{padding:4px 10px;background:transparent;border:0.5px solid var(--danger);border-radius:var(--radius);font-size:12px;color:var(--danger);cursor:pointer;transition:background .15s;}
+.btn-danger-sm:hover{background:var(--danger-bg);}
 .btn-mark{font-size:11px;padding:2px 8px;border-radius:8px;border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;}
 .btn-mark:hover{background:var(--success-bg);color:var(--success);border-color:var(--success);}
 .btn-delete{font-size:11px;padding:2px 7px;border-radius:8px;border:0.5px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;}
 .btn-delete:hover{background:var(--danger-bg);color:var(--danger);border-color:var(--danger);}
 
-/* TOPBAR */
+/* ── TOPBAR ── */
 #main-screen{min-height:100vh;}
 .topbar{background:var(--surface);border-bottom:0.5px solid var(--border);padding:.85rem 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
 .topbar-left{display:flex;align-items:center;gap:.6rem;}
 .topbar-left span{font-size:20px;}
 .topbar-left h2{font-size:17px;font-weight:600;}
 .topbar-right{display:flex;align-items:center;gap:.6rem;}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent-bg);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;}
+.top-avatar-img{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid var(--border2);}
+.top-avatar-fallback{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;}
 .topbar-name{font-size:14px;font-weight:500;}
 .admin-badge{font-size:10px;background:var(--warn-bg);color:var(--warn);border:0.5px solid var(--warn);border-radius:6px;padding:1px 6px;font-weight:600;}
 
-/* TABS */
+/* ── TABS ── */
 .tabs{display:flex;gap:.35rem;padding:.85rem 1.25rem .5rem;overflow-x:auto;}
 .tab{padding:6px 14px;font-size:13px;border-radius:var(--radius);border:0.5px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s;}
 .tab.active{background:var(--accent-bg);color:var(--accent-text);border-color:var(--accent);}
 .content{padding:1rem 1.25rem 4rem;max-width:680px;margin:0 auto;}
 
-/* METRICS */
+/* ── METRICS ── */
 .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.25rem;}
 .metric{background:var(--surface2);border-radius:var(--radius);padding:.85rem;}
 .metric-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
 .metric-val{font-size:22px;font-weight:600;}
 .metric-val.danger{color:var(--danger);}.metric-val.success{color:var(--success);}.metric-val.accent{color:var(--accent);}
 
-/* EXPENSE CARDS */
+/* ── EXPENSE CARDS ── */
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;margin-top:1.25rem;}
 .section-title{font-size:14px;font-weight:600;}
 .expense-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem;margin-bottom:.6rem;transition:border-color .15s;}
@@ -107,7 +111,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .badge-owed{background:var(--warn-bg);color:var(--warn);}
 .proof-mini{width:26px;height:26px;object-fit:cover;border-radius:4px;border:0.5px solid var(--border2);cursor:pointer;vertical-align:middle;}
 
-/* ADD FORM */
+/* ── FORM ── */
 .form-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;}
 .form-row{margin-bottom:1rem;}
 .form-row label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500;}
@@ -136,7 +140,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .split-preview strong{color:var(--text);}
 .form-footer{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem;}
 
-/* MY BALANCE */
+/* ── MY BALANCE ── */
 .balance-hero{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem;}
 .balance-label{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.25rem;}
 .balance-big{font-size:38px;font-weight:700;line-height:1;margin-bottom:.35rem;}
@@ -146,14 +150,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .history-left h4{font-size:13px;font-weight:500;margin-bottom:2px;}
 .history-left p{font-size:12px;color:var(--text3);}
 
-/* HOUSE SUMMARY */
+/* ── HOUSE SUMMARY ── */
 .house-member-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color .15s;}
 .house-member-card:hover{border-color:var(--accent);}
 .house-member-top{display:flex;align-items:center;justify-content:space-between;}
 .house-member-left{display:flex;align-items:center;gap:.75rem;}
-.house-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;}
-.member-name{font-size:14px;font-weight:500;}
-.member-sub{font-size:12px;color:var(--text3);}
+.hmember-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid var(--border2);}
+.hmember-avatar-fallback{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;}
+.member-name-txt{font-size:14px;font-weight:500;}
+.member-sub-txt{font-size:12px;color:var(--text3);}
 .expand-hint{font-size:11px;color:var(--text3);margin-top:3px;}
 .member-detail{display:none;margin-top:.85rem;padding-top:.85rem;border-top:0.5px solid var(--border);}
 .member-detail.open{display:block;}
@@ -168,26 +173,62 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .detail-expense-date{font-size:11px;color:var(--text3);}
 .detail-none{font-size:13px;color:var(--text3);text-align:center;padding:.75rem 0;}
 
-/* ADMIN PANEL */
+/* ── RELATIONSHIPS TAB ── */
+.rel-member-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color .15s;}
+.rel-member-card:hover{border-color:var(--accent);}
+.rel-top{display:flex;align-items:center;justify-content:space-between;}
+.rel-left{display:flex;align-items:center;gap:.75rem;}
+.rel-status{text-align:right;}
+.rel-amount{font-size:18px;font-weight:700;}
+.rel-amount.you-owe{color:var(--danger);}
+.rel-amount.they-owe{color:var(--success);}
+.rel-amount.clear{color:var(--text3);}
+.rel-label{font-size:11px;color:var(--text3);margin-top:2px;}
+.rel-detail{display:none;margin-top:.85rem;padding-top:.85rem;border-top:0.5px solid var(--border);}
+.rel-detail.open{display:block;}
+.rel-expense-row{font-size:13px;padding:6px 0;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.rel-expense-row:last-child{border-bottom:none;}
+.rel-exp-left{flex:1;min-width:0;}
+.rel-exp-name{font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rel-exp-meta{font-size:11px;color:var(--text3);}
+.rel-exp-right{text-align:right;flex-shrink:0;}
+.rel-exp-amt{font-size:13px;font-weight:600;}
+.rel-exp-status{font-size:11px;color:var(--text3);}
+
+/* ── PROFILE TAB ── */
+.profile-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;margin-bottom:1rem;}
+.profile-avatar-wrap{position:relative;display:inline-block;margin-bottom:1rem;}
+.profile-avatar-img{width:88px;height:88px;border-radius:50%;object-fit:cover;border:3px solid var(--border2);}
+.profile-avatar-fallback{width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;border:3px solid var(--border2);}
+.profile-avatar-edit{position:absolute;bottom:2px;right:2px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:2px solid var(--surface);}
+.profile-avatar-edit input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;border-radius:50%;}
+.profile-name-display{font-size:20px;font-weight:700;margin-bottom:.25rem;}
+.profile-name-sub{font-size:13px;color:var(--text3);margin-bottom:1.5rem;}
+.profile-edit-row{display:flex;gap:.5rem;margin-bottom:.75rem;}
+.profile-edit-row input{flex:1;padding:.6rem .85rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-size:14px;outline:none;transition:border-color .15s;}
+.profile-edit-row input:focus{border-color:var(--accent);}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:1.25rem;}
+.profile-stat{background:var(--surface2);border-radius:var(--radius);padding:.65rem .5rem;text-align:center;}
+.profile-stat-val{font-size:18px;font-weight:700;}
+.profile-stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+
+/* ── ADMIN PANEL ── */
 .admin-panel{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;}
-.admin-panel-title{font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+.admin-panel-title{font-size:14px;font-weight:600;margin-bottom:1rem;}
 .admin-member-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:0.5px solid var(--border);}
 .admin-member-row:last-child{border-bottom:none;}
 .admin-member-info{display:flex;align-items:center;gap:.6rem;}
-.admin-member-name{font-size:14px;font-weight:500;}
 .add-member-row{display:flex;gap:.5rem;margin-top:.85rem;}
 .add-member-row input{flex:1;padding:.55rem .85rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-size:14px;outline:none;transition:border-color .15s;}
 .add-member-row input:focus{border-color:var(--accent);}
-.add-member-row button{padding:.55rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity .15s;}
+.add-member-row button{padding:.55rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;}
 .add-member-row button:hover{opacity:.9;}
-
-/* DANGER ZONE */
 .danger-zone{background:var(--surface);border:0.5px solid var(--danger);border-radius:var(--radius-lg);padding:1.25rem;margin-top:1.25rem;}
 .danger-zone-title{font-size:14px;font-weight:600;color:var(--danger);margin-bottom:.35rem;}
 .danger-zone-desc{font-size:13px;color:var(--text2);margin-bottom:1rem;}
 .danger-zone-actions{display:flex;flex-wrap:wrap;gap:.6rem;}
 
-/* MODAL */
+/* ── MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:50;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .2s;}
 .modal-overlay.open{opacity:1;pointer-events:all;}
 .modal{background:var(--surface);border-radius:var(--radius-lg);padding:1.5rem;width:100%;max-width:420px;transform:translateY(12px);transition:transform .2s;}
@@ -199,13 +240,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .modal-note:focus{border-color:var(--accent);}
 .modal-footer{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1.25rem;}
 
-/* LIGHTBOX */
+/* ── LIGHTBOX ── */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;}
 .lightbox.open{opacity:1;pointer-events:all;}
 .lightbox img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:var(--radius);}
 .lightbox-close{position:absolute;top:1rem;right:1rem;color:#fff;font-size:26px;cursor:pointer;background:rgba(0,0,0,0.5);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
 
-/* MISC */
+/* ── MISC ── */
 .empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:14px;}
 .empty-icon{font-size:2rem;margin-bottom:.5rem;}
 #loading-overlay{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:999;}
@@ -213,22 +254,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 @keyframes spin{to{transform:rotate(360deg);}}
 #toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:.6rem 1.25rem;border-radius:20px;font-size:13px;font-weight:500;opacity:0;transition:all .25s;pointer-events:none;z-index:200;white-space:nowrap;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-@media(max-width:480px){.topbar-name{display:none;}.content{padding:.75rem .85rem 4rem;}.balance-big{font-size:30px;}}
+@media(max-width:480px){.topbar-name{display:none;}.content{padding:.75rem .85rem 4rem;}.balance-big{font-size:30px;}.profile-stats{grid-template-columns:1fr 1fr 1fr;}}
 </style>
 </head>
 <body>
 
-<div id="loading-overlay">
-  <div style="font-size:2rem">🏠</div>
-  <div class="spinner"></div>
-  <div style="font-size:13px;color:var(--text3)">Connecting…</div>
-</div>
+<div id="loading-overlay"><div style="font-size:2rem">🏠</div><div class="spinner"></div><div style="font-size:13px;color:var(--text3)">Connecting…</div></div>
 <div id="toast"></div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <div class="lightbox-close" onclick="closeLightbox()">×</div>
-  <img id="lightbox-img" src="" alt="proof"/>
+  <img id="lightbox-img" src="" alt=""/>
 </div>
 
 <!-- MARK PAID MODAL -->
@@ -237,21 +274,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="modal-title">Confirm payment</div>
     <div class="modal-sub" id="modal-sub"></div>
     <label class="modal-label">Note (optional)</label>
-    <textarea class="modal-note" id="modal-note" placeholder="e.g. Paid via Zelle, handed cash, Venmo…"></textarea>
+    <textarea class="modal-note" id="modal-note" placeholder="e.g. Paid via Zelle, handed cash…"></textarea>
     <label class="modal-label">Upload proof of payment (optional)</label>
     <div class="upload-zone">
       <input type="file" id="proof-file-input" accept="image/*,.pdf" onchange="handleProofFile(event)"/>
       <div class="upload-zone-icon">📎</div>
-      <div class="upload-zone-text">Tap to upload receipt, screenshot, or file</div>
-      <div class="upload-zone-sub">Bank transfer, Venmo screenshot, cash photo — max 4MB</div>
+      <div class="upload-zone-text">Tap to upload receipt or screenshot</div>
+      <div class="upload-zone-sub">Max 4MB</div>
     </div>
     <div class="upload-preview" id="proof-preview" style="display:none">
-      <img id="proof-preview-img" src="" alt="proof"/>
+      <img id="proof-preview-img" src="" alt=""/>
       <div class="upload-preview-info">
         <div class="upload-preview-name" id="proof-preview-name"></div>
         <div class="upload-preview-size" id="proof-preview-size"></div>
       </div>
-      <button class="upload-remove" onclick="clearProofFile()">✕ Remove</button>
+      <button class="upload-remove" onclick="clearProofFile()">✕</button>
     </div>
     <div class="modal-footer">
       <button class="btn-ghost" onclick="closeModal()">Cancel</button>
@@ -262,31 +299,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
 <!-- LOGIN -->
 <div class="screen" id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">🏠</div>
-    <h1>HouseSplit</h1>
-    <p class="sub">Shared expenses, made simple</p>
-
-    <!-- ADMIN LOGIN SECTION -->
-    <div id="admin-login-section">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:.6rem;text-align:left;font-weight:500;">Admin login</div>
-      <input class="login-input" type="text" id="admin-user-input" placeholder="Admin username" autocomplete="off"/>
-      <input class="login-input" type="password" id="admin-pass-input" placeholder="Admin password"/>
-      <button class="btn-primary" id="admin-login-btn" onclick="handleAdminLogin()">Login as admin</button>
-      <div class="login-error" id="admin-error"></div>
-    </div>
-
-    <!-- DIVIDER -->
-    <div class="login-divider" id="login-divider-el" style="display:none">
-      <hr/><span>or sign in as a member</span><hr/>
-    </div>
-
-    <!-- MEMBER LOGIN SECTION -->
-    <div id="member-login-section" style="display:none">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:.6rem;text-align:left;font-weight:500;">Members</div>
-      <div class="member-chips" id="member-login-chips"></div>
-      <div class="login-error" id="member-error" style="margin-top:.5rem"></div>
-    </div>
+  <div class="login-logo">🏠</div>
+  <div class="login-title">HouseSplit</div>
+  <div class="login-sub">Who are you?</div>
+  <div class="login-members-grid" id="login-members-grid">
+    <div class="login-empty">No members yet.<br/>Ask your admin to add you.</div>
+  </div>
+  <!-- Hidden admin trigger -->
+  <div class="admin-trigger" id="admin-trigger" onclick="toggleAdminBox()">@</div>
+  <div class="admin-box" id="admin-box">
+    <div class="admin-box-title">Admin login</div>
+    <input class="admin-input" type="text" id="admin-user-input" placeholder="Username" autocomplete="off"/>
+    <input class="admin-input" type="password" id="admin-pass-input" placeholder="Password"/>
+    <button class="btn-primary" style="font-size:14px;padding:.55rem" onclick="handleAdminLogin()">Login</button>
+    <div class="login-error" id="admin-error"></div>
   </div>
 </div>
 
@@ -295,21 +321,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
   <div class="topbar">
     <div class="topbar-left"><span>🏠</span><h2>HouseSplit</h2></div>
     <div class="topbar-right">
-      <div class="avatar" id="top-avatar"></div>
+      <div id="top-avatar-wrap"></div>
       <span class="topbar-name" id="top-name"></span>
       <span class="admin-badge" id="admin-badge" style="display:none">ADMIN</span>
       <button class="btn-ghost" onclick="handleLogout()">Sign out</button>
     </div>
   </div>
-
   <div class="tabs" id="main-tabs">
     <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
-    <button class="tab" onclick="switchTab('add')">+ Add expense</button>
+    <button class="tab" onclick="switchTab('add')">+ Add</button>
     <button class="tab" onclick="switchTab('mine')">My balance</button>
-    <button class="tab" onclick="switchTab('house')">House summary</button>
-    <!-- Admin tab injected if admin -->
+    <button class="tab" onclick="switchTab('people')">People</button>
+    <button class="tab" onclick="switchTab('house')">House</button>
+    <button class="tab" onclick="switchTab('profile')">Profile</button>
   </div>
-
   <div class="content">
 
     <!-- DASHBOARD -->
@@ -339,16 +364,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           <div class="upload-zone">
             <input type="file" id="expense-file-input" accept="image/*,.pdf" onchange="handleExpenseFile(event)"/>
             <div class="upload-zone-icon">🧾</div>
-            <div class="upload-zone-text">Tap to attach photo, bill scan, or receipt</div>
-            <div class="upload-zone-sub">Image or PDF — max 4MB</div>
+            <div class="upload-zone-text">Tap to attach photo or receipt</div>
+            <div class="upload-zone-sub">Max 4MB</div>
           </div>
           <div class="upload-preview" id="expense-preview" style="display:none">
-            <img id="expense-preview-img" src="" alt="receipt"/>
+            <img id="expense-preview-img" src="" alt=""/>
             <div class="upload-preview-info">
               <div class="upload-preview-name" id="expense-preview-name"></div>
               <div class="upload-preview-size" id="expense-preview-size"></div>
             </div>
-            <button class="upload-remove" onclick="clearExpenseFile()">✕ Remove</button>
+            <button class="upload-remove" onclick="clearExpenseFile()">✕</button>
           </div>
         </div>
         <div class="form-footer">
@@ -369,35 +394,50 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div id="my-history-list"></div>
     </div>
 
+    <!-- PEOPLE (relationships) -->
+    <div id="tab-people" style="display:none">
+      <div style="font-size:13px;color:var(--text3);margin-bottom:.85rem">Your balance with each housemate. Tap to see the breakdown.</div>
+      <div id="people-list"></div>
+    </div>
+
     <!-- HOUSE SUMMARY -->
     <div id="tab-house" style="display:none">
-      <div style="font-size:13px;color:var(--text3);margin-bottom:.85rem">Tap any member to see their full breakdown.</div>
+      <div style="font-size:13px;color:var(--text3);margin-bottom:.85rem">Tap any member to expand their full breakdown.</div>
       <div id="house-list"></div>
     </div>
 
-    <!-- ADMIN PANEL -->
-    <div id="tab-admin" style="display:none">
+    <!-- PROFILE -->
+    <div id="tab-profile" style="display:none">
+      <div class="profile-card">
+        <div class="profile-avatar-wrap" id="profile-avatar-wrap"></div>
+        <div class="profile-name-display" id="profile-name-display"></div>
+        <div class="profile-name-sub">Tap the pencil to change your photo</div>
+        <div class="profile-edit-row" style="margin-top:1rem">
+          <input type="text" id="profile-name-input" placeholder="Your display name" maxlength="24"/>
+          <button class="btn-primary" style="width:auto;padding:.55rem 1rem;font-size:13px" onclick="saveProfileName()">Save</button>
+        </div>
+        <div class="profile-stats" id="profile-stats"></div>
+      </div>
+    </div>
 
-      <!-- Member management -->
+    <!-- ADMIN -->
+    <div id="tab-admin" style="display:none">
       <div class="admin-panel">
         <div class="admin-panel-title">👥 Manage members</div>
         <div id="admin-member-list"></div>
         <div class="add-member-row">
           <input type="text" id="new-member-input" placeholder="New member name…" maxlength="24" autocomplete="off"/>
-          <button onclick="adminAddMember()">Add member</button>
+          <button onclick="adminAddMember()">Add</button>
         </div>
       </div>
-
-      <!-- Danger zone -->
       <div class="danger-zone">
         <div class="danger-zone-title">⚠️ Danger zone</div>
-        <div class="danger-zone-desc">These actions are permanent and cannot be undone. Use with caution.</div>
+        <div class="danger-zone-desc">These actions are permanent and cannot be undone.</div>
         <div class="danger-zone-actions">
-          <button class="btn-danger" onclick="adminResetExpenses()">🗑 Delete all expenses</button>
-          <button class="btn-danger" onclick="adminResetAll()">💥 Reset everything (expenses + members)</button>
+          <button class="btn-danger-sm" onclick="adminResetExpenses()">🗑 Delete all expenses</button>
+          <button class="btn-danger-sm" onclick="adminResetAll()">💥 Reset everything</button>
         </div>
       </div>
-
     </div>
 
   </div>
@@ -405,11 +445,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
 <script type="module">
 // ================================================================
-//  ⚙️  ADMIN CREDENTIALS — change these before deploying
-//  Username and password are checked client-side only.
-//  For stronger security, use Firebase Authentication instead.
+//  ⚙️  CHANGE THESE BEFORE DEPLOYING
 // ================================================================
-const ADMIN_USERNAME = "pai;
+const ADMIN_USERNAME = "pai";
 const ADMIN_PASSWORD = "kouthomie";
 // ================================================================
 
@@ -431,30 +469,39 @@ import { getDatabase, ref, onValue, set, update, push, remove, get }
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
-// ── State ──────────────────────────────────────────────────────
-let currentUser     = localStorage.getItem('hs_user') || null;
-let isAdmin         = localStorage.getItem('hs_admin') === '1';
-let members         = [];
-let expenses        = [];
-let modalExpenseId  = null;
-let modalMemberName = null;
-let proofFileB64    = null;
-let expenseFileB64  = null;
+let currentUser    = localStorage.getItem('hs_user') || null;
+let isAdmin        = localStorage.getItem('hs_admin') === '1';
+let members        = [];   // [{name, photo?}]
+let expenses       = [];
+let profiles       = {};   // keyed by memberKey: {name, photo}
+let modalExpenseId = null;
+let modalMemberName= null;
+let proofFileB64   = null;
+let expenseFileB64 = null;
 
 const CATS   = ['Electric','Rent','Gas','Water','Internet','Groceries','Trash','Other'];
 const COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4','#f97316'];
 
 // ── Helpers ────────────────────────────────────────────────────
 function fmt(n){ return '$'+Number(n).toFixed(2); }
-function initials(n){ return n.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
-function colorFor(name){ let h=0; for(let c of name) h=(h*31+c.charCodeAt(0))&0xffffffff; return COLORS[Math.abs(h)%COLORS.length]; }
+function initials(n){ return (n||'?').trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function colorFor(name){ let h=0; for(let c of (name||'')) h=(h*31+c.charCodeAt(0))&0xffffffff; return COLORS[Math.abs(h)%COLORS.length]; }
 function toast(msg,dur=2200){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),dur); }
 function hideLoading(){ document.getElementById('loading-overlay').style.display='none'; }
 function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
 function fileToB64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(file); }); }
 function fmtSize(b){ return b<1024?b+'B':b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB'; }
 function mkid(name){ return 'hm-'+name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-]/g,''); }
-function memberKey(name){ return name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,''); }
+function memberKey(name){ return (name||'').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,''); }
+function getProfile(name){ return profiles[memberKey(name)]||{}; }
+function getPhoto(name){ return getProfile(name).photo||null; }
+
+// Build avatar HTML (img or colored fallback)
+function avatarHtml(name, size=36, cls='hmember-avatar', fcls='hmember-avatar-fallback'){
+  const photo=getPhoto(name); const col=colorFor(name);
+  if(photo) return `<img class="${cls}" src="${photo}" style="width:${size}px;height:${size}px" alt="${name}"/>`;
+  return `<div class="${fcls}" style="width:${size}px;height:${size}px;background:${col}22;color:${col}">${initials(name)}</div>`;
+}
 
 // ── File handlers ──────────────────────────────────────────────
 window.handleProofFile = async function(e){
@@ -466,11 +513,8 @@ window.handleProofFile = async function(e){
   document.getElementById('proof-preview-size').textContent=fmtSize(f.size);
   document.getElementById('proof-preview').style.display='flex';
 };
-window.clearProofFile = function(){
-  proofFileB64=null; document.getElementById('proof-file-input').value='';
-  document.getElementById('proof-preview').style.display='none';
-};
-window.handleExpenseFile = async function(e){
+window.clearProofFile=function(){ proofFileB64=null; document.getElementById('proof-file-input').value=''; document.getElementById('proof-preview').style.display='none'; };
+window.handleExpenseFile=async function(e){
   const f=e.target.files[0]; if(!f) return;
   if(f.size>4*1024*1024){ toast('File too large — max 4MB'); return; }
   expenseFileB64=await fileToB64(f);
@@ -479,156 +523,165 @@ window.handleExpenseFile = async function(e){
   document.getElementById('expense-preview-size').textContent=fmtSize(f.size);
   document.getElementById('expense-preview').style.display='flex';
 };
-window.clearExpenseFile = function(){
-  expenseFileB64=null; document.getElementById('expense-file-input').value='';
-  document.getElementById('expense-preview').style.display='none';
-};
-
-// ── Lightbox ───────────────────────────────────────────────────
-window.openLightbox = function(src){ document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').classList.add('open'); };
-window.closeLightbox = function(){ document.getElementById('lightbox').classList.remove('open'); };
+window.clearExpenseFile=function(){ expenseFileB64=null; document.getElementById('expense-file-input').value=''; document.getElementById('expense-preview').style.display='none'; };
+window.openLightbox=function(src){ document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').classList.add('open'); };
+window.closeLightbox=function(){ document.getElementById('lightbox').classList.remove('open'); };
 
 // ── Firebase listeners ─────────────────────────────────────────
 function startListening(){
   onValue(ref(db,'members'),snap=>{
     members=Object.values(snap.val()||{});
-    renderLoginMemberChips();
-    if(currentUser) renderAll();
+    renderLoginGrid();
+    if(currentUser||isAdmin) renderAll();
     if(isAdmin) renderAdminPanel();
   });
   onValue(ref(db,'expenses'),snap=>{
     const val=snap.val()||{};
     expenses=Object.entries(val).map(([id,e])=>({...e,id}));
     expenses.sort((a,b)=>b.ts-a.ts);
-    if(currentUser) renderAll();
+    if(currentUser||isAdmin) renderAll();
+  });
+  onValue(ref(db,'profiles'),snap=>{
+    profiles=snap.val()||{};
+    renderLoginGrid();
+    renderTopAvatar();
+    if(currentUser||isAdmin) renderAll();
   });
 }
 
-// ── Login screen setup ─────────────────────────────────────────
-function renderLoginMemberChips(){
-  const chips=document.getElementById('member-login-chips');
-  const section=document.getElementById('member-login-section');
-  const divider=document.getElementById('login-divider-el');
+// ── Login grid ─────────────────────────────────────────────────
+function renderLoginGrid(){
+  const grid=document.getElementById('login-members-grid');
   if(!members.length){
-    section.style.display='none'; divider.style.display='none'; return;
+    grid.innerHTML=`<div class="login-empty">No members yet.<br/>Ask your admin to add you.</div>`;
+    return;
   }
-  section.style.display='block'; divider.style.display='flex';
-  chips.innerHTML=members.map(m=>
-    `<span class="member-chip" onclick="handleMemberLogin('${m.name}')">${m.name}</span>`
-  ).join('');
+  grid.innerHTML=members.map(m=>{
+    const photo=getPhoto(m.name); const col=colorFor(m.name);
+    const avatarEl=photo
+      ?`<img class="login-member-avatar" src="${photo}" alt="${m.name}"/>`
+      :`<div class="login-member-avatar-fallback" style="background:${col}22;color:${col}">${initials(m.name)}</div>`;
+    return `<div class="login-member-btn" onclick="handleMemberLogin('${m.name}')">
+      ${avatarEl}
+      <span class="login-member-name">${m.name}</span>
+    </div>`;
+  }).join('');
 }
 
-// ── Admin login ────────────────────────────────────────────────
-window.handleAdminLogin = function(){
+// ── Admin login toggle ─────────────────────────────────────────
+window.toggleAdminBox=function(){
+  document.getElementById('admin-box').classList.toggle('open');
+};
+window.handleAdminLogin=function(){
   const u=document.getElementById('admin-user-input').value.trim();
   const p=document.getElementById('admin-pass-input').value;
-  const err=document.getElementById('admin-error');
   if(u!==ADMIN_USERNAME||p!==ADMIN_PASSWORD){
-    err.textContent='Incorrect username or password.'; return;
+    document.getElementById('admin-error').textContent='Incorrect username or password.'; return;
   }
-  err.textContent='';
+  document.getElementById('admin-error').textContent='';
   currentUser='Admin'; isAdmin=true;
-  localStorage.setItem('hs_user','Admin');
-  localStorage.setItem('hs_admin','1');
+  localStorage.setItem('hs_user','Admin'); localStorage.setItem('hs_admin','1');
   showApp();
 };
 document.getElementById('admin-pass-input').addEventListener('keydown',e=>{ if(e.key==='Enter') handleAdminLogin(); });
 
-// ── Member login (click chip) ──────────────────────────────────
-window.handleMemberLogin = function(name){
-  // verify name is still in the members list
-  if(!members.some(m=>m.name===name)){
-    document.getElementById('member-error').textContent='Member not found. Ask your admin to add you.';
-    return;
-  }
+// ── Member login ───────────────────────────────────────────────
+window.handleMemberLogin=function(name){
+  if(!members.some(m=>m.name===name)){ toast('Member not found'); return; }
   currentUser=name; isAdmin=false;
-  localStorage.setItem('hs_user',name);
-  localStorage.removeItem('hs_admin');
+  localStorage.setItem('hs_user',name); localStorage.removeItem('hs_admin');
   showApp();
 };
 
 // ── Logout ─────────────────────────────────────────────────────
-window.handleLogout = function(){
+window.handleLogout=function(){
   currentUser=null; isAdmin=false;
   localStorage.removeItem('hs_user'); localStorage.removeItem('hs_admin');
   document.getElementById('admin-user-input').value='';
   document.getElementById('admin-pass-input').value='';
   document.getElementById('admin-error').textContent='';
-  document.getElementById('member-error').textContent='';
+  document.getElementById('admin-box').classList.remove('open');
   showScreen('login-screen');
 };
 
 // ── Show app ───────────────────────────────────────────────────
 function showApp(){
   showScreen('main-screen');
-  const name=isAdmin?'Admin':currentUser;
-  document.getElementById('top-avatar').textContent=initials(name);
-  document.getElementById('top-avatar').style.background=isAdmin?'var(--warn-bg)':colorFor(currentUser)+'22';
-  document.getElementById('top-avatar').style.color=isAdmin?'var(--warn)':colorFor(currentUser);
-  document.getElementById('top-name').textContent=name;
+  const displayName=isAdmin?'Admin':currentUser;
+  document.getElementById('top-name').textContent=displayName;
   document.getElementById('admin-badge').style.display=isAdmin?'inline-flex':'none';
+  renderTopAvatar();
 
-  // inject or remove admin tab
+  // admin tab
   const existingAdminTab=document.getElementById('admin-tab-btn');
   if(isAdmin&&!existingAdminTab){
     const btn=document.createElement('button');
     btn.className='tab'; btn.id='admin-tab-btn'; btn.textContent='⚙️ Admin';
     btn.onclick=()=>switchTab('admin');
     document.getElementById('main-tabs').appendChild(btn);
-  } else if(!isAdmin&&existingAdminTab){
-    existingAdminTab.remove();
-  }
+  } else if(!isAdmin&&existingAdminTab){ existingAdminTab.remove(); }
 
-  // hide "mine" tab for admin (admin is not a real housemate)
+  // hide mine & people & profile for admin
   document.querySelectorAll('.tab').forEach(t=>{
-    if(t.textContent==='My balance') t.style.display=isAdmin?'none':'';
+    if(['My balance','People','Profile'].includes(t.textContent))
+      t.style.display=isAdmin?'none':'';
   });
 
-  resetForm();
-  switchTab('dashboard');
+  resetForm(); switchTab('dashboard');
+}
+
+function renderTopAvatar(){
+  const wrap=document.getElementById('top-avatar-wrap');
+  if(!wrap) return;
+  if(isAdmin){
+    wrap.innerHTML=`<div class="top-avatar-fallback" style="background:var(--warn-bg);color:var(--warn)">A</div>`;
+  } else if(currentUser){
+    const photo=getPhoto(currentUser); const col=colorFor(currentUser);
+    wrap.innerHTML=photo
+      ?`<img class="top-avatar-img" src="${photo}" alt="${currentUser}"/>`
+      :`<div class="top-avatar-fallback" style="background:${col}22;color:${col}">${initials(currentUser)}</div>`;
+  }
 }
 
 // ── Tabs ───────────────────────────────────────────────────────
 let activeTab='dashboard';
-window.switchTab = function(t){
+window.switchTab=function(t){
   activeTab=t;
-  ['dashboard','add','mine','house','admin'].forEach(x=>{
-    const el=document.getElementById('tab-'+x);
-    if(el) el.style.display=x===t?'block':'none';
+  ['dashboard','add','mine','people','house','profile','admin'].forEach(x=>{
+    const el=document.getElementById('tab-'+x); if(el) el.style.display=x===t?'block':'none';
   });
   document.querySelectorAll('.tab').forEach(el=>{
-    const map={'Dashboard':'dashboard','+ Add expense':'add','My balance':'mine','House summary':'house','⚙️ Admin':'admin'};
+    const map={'Dashboard':'dashboard','+ Add':'add','My balance':'mine','People':'people','House':'house','Profile':'profile','⚙️ Admin':'admin'};
     el.classList.toggle('active',map[el.textContent]===t);
   });
-  if(t==='add')   renderAddForm();
-  if(t==='admin') renderAdminPanel();
+  if(t==='add')     renderAddForm();
+  if(t==='profile') renderProfile();
+  if(t==='admin')   renderAdminPanel();
   renderAll();
 };
 
 function renderAll(){
   if(activeTab==='dashboard') renderDashboard();
   if(activeTab==='mine'&&!isAdmin) renderMine();
-  if(activeTab==='house')     renderHouse();
+  if(activeTab==='people'&&!isAdmin) renderPeople();
+  if(activeTab==='house') renderHouse();
 }
 
 // ── Dashboard ──────────────────────────────────────────────────
 function renderDashboard(){
   const me=currentUser; let myOwed=0,myPaid=0,houseTotal=0;
   expenses.forEach(e=>{ houseTotal+=e.total; const s=(e.splits||[]).find(s=>s.name===me); if(s){ s.paid?myPaid+=s.amount:myOwed+=s.amount; } });
-
-  const metricsHtml=isAdmin
-    ? `<div class="metric"><div class="metric-label">House total</div><div class="metric-val accent">${fmt(houseTotal)}</div></div>
-       <div class="metric"><div class="metric-label">Expenses</div><div class="metric-val">${expenses.length}</div></div>
-       <div class="metric"><div class="metric-label">Members</div><div class="metric-val">${members.length}</div></div>`
-    : `<div class="metric"><div class="metric-label">You owe</div><div class="metric-val danger">${fmt(myOwed)}</div></div>
-       <div class="metric"><div class="metric-label">You've paid</div><div class="metric-val success">${fmt(myPaid)}</div></div>
-       <div class="metric"><div class="metric-label">House total</div><div class="metric-val accent">${fmt(houseTotal)}</div></div>
-       <div class="metric"><div class="metric-label">Expenses</div><div class="metric-val">${expenses.length}</div></div>`;
-
-  document.getElementById('metric-grid').innerHTML=metricsHtml;
+  document.getElementById('metric-grid').innerHTML=isAdmin
+    ?`<div class="metric"><div class="metric-label">House total</div><div class="metric-val accent">${fmt(houseTotal)}</div></div>
+      <div class="metric"><div class="metric-label">Expenses</div><div class="metric-val">${expenses.length}</div></div>
+      <div class="metric"><div class="metric-label">Members</div><div class="metric-val">${members.length}</div></div>`
+    :`<div class="metric"><div class="metric-label">You owe</div><div class="metric-val danger">${fmt(myOwed)}</div></div>
+      <div class="metric"><div class="metric-label">You've paid</div><div class="metric-val success">${fmt(myPaid)}</div></div>
+      <div class="metric"><div class="metric-label">House total</div><div class="metric-val accent">${fmt(houseTotal)}</div></div>
+      <div class="metric"><div class="metric-label">Expenses</div><div class="metric-val">${expenses.length}</div></div>`;
   document.getElementById('expense-count').textContent=expenses.length+' total';
   const list=document.getElementById('all-expenses-list');
-  if(!expenses.length){ list.innerHTML=`<div class="empty"><div class="empty-icon">🧾</div>No expenses yet — add one!</div>`; return; }
+  if(!expenses.length){ list.innerHTML=`<div class="empty"><div class="empty-icon">🧾</div>No expenses yet.</div>`; return; }
   list.innerHTML=expenses.map(e=>renderExpenseCard(e)).join('');
 }
 
@@ -637,9 +690,8 @@ function renderExpenseCard(e){
   const splits=(e.splits||[]).map(s=>{
     const canMark=!s.paid&&(s.name===me||e.paidBy===me||isAdmin);
     const isMe=!isAdmin&&s.name===me;
-    const proofEl=s.proofImg
-      ?`<img class="proof-mini" src="${s.proofImg}" onclick="openLightbox('${s.proofImg}')" title="View proof"/>`
-      :(s.proofNote&&s.paid?`<span title="${s.proofNote}" style="cursor:help;font-size:12px">📝</span>`:'');
+    const proofEl=s.proofImg?`<img class="proof-mini" src="${s.proofImg}" onclick="openLightbox('${s.proofImg}')" title="View proof"/>`:
+                  (s.proofNote&&s.paid?`<span title="${s.proofNote}" style="cursor:help;font-size:12px">📝</span>`:'');
     return `<div class="split-row">
       <span class="split-name" style="${isMe?'font-weight:500;color:var(--text)':''}">${s.name}${isMe?' (you)':''}</span>
       <div class="split-right">
@@ -651,13 +703,13 @@ function renderExpenseCard(e){
     </div>`;
   }).join('');
   const canDelete=isAdmin||(e.addedBy||e.paidBy)===me;
-  const receiptRow=e.receiptImg?`<div class="receipt-row"><img class="receipt-thumb" src="${e.receiptImg}" onclick="openLightbox('${e.receiptImg}')" title="View receipt"/><span class="receipt-label">Receipt attached — tap to view</span></div>`:'';
+  const receiptRow=e.receiptImg?`<div class="receipt-row"><img class="receipt-thumb" src="${e.receiptImg}" onclick="openLightbox('${e.receiptImg}')"/><span class="receipt-label">Receipt — tap to view</span></div>`:'';
   return `<div class="expense-card">
     <div class="expense-top">
       <div>
         <div class="expense-cat-badge">${e.category}</div>
         <div class="expense-desc">${e.desc}</div>
-        <div class="expense-meta">Paid by ${e.paidBy} · ${e.date}${e.addedBy?' · added by '+e.addedBy:''}</div>
+        <div class="expense-meta">Paid by ${e.paidBy} · ${e.date}</div>
       </div>
       <div style="text-align:right">
         <div class="expense-amount">${fmt(e.total)}</div>
@@ -677,7 +729,7 @@ function renderMine(){
   el.textContent=fmt(owed); el.className='balance-big '+(owed>0?'danger':'clear');
   document.getElementById('my-paid-line').textContent=`${fmt(paid)} already marked paid`;
   const list=document.getElementById('my-history-list');
-  if(!mine.length){ list.innerHTML=`<div class="empty"><div class="empty-icon">💸</div>You're not in any expenses yet.</div>`; return; }
+  if(!mine.length){ list.innerHTML=`<div class="empty"><div class="empty-icon">💸</div>Not in any expenses yet.</div>`; return; }
   list.innerHTML=mine.map(({e,s})=>{
     const proofEl=s.proofImg?`<img class="proof-mini" src="${s.proofImg}" onclick="openLightbox('${s.proofImg}')" title="View proof"/>`:
                   (s.proofNote&&s.paid?`<span title="${s.proofNote}" style="cursor:help;font-size:12px">📝</span>`:'');
@@ -697,6 +749,91 @@ function renderMine(){
   }).join('');
 }
 
+// ── People (relationships) ─────────────────────────────────────
+function renderPeople(){
+  const me=currentUser;
+  const others=members.filter(m=>m.name!==me);
+  const list=document.getElementById('people-list');
+  if(!others.length){ list.innerHTML=`<div class="empty"><div class="empty-icon">👥</div>No other members yet.</div>`; return; }
+
+  list.innerHTML=others.map(m=>{
+    const other=m.name;
+    // net calculation: positive = other owes me, negative = I owe other
+    let net=0;
+    const sharedExpenses=[];
+    expenses.forEach(e=>{
+      const myS=(e.splits||[]).find(s=>s.name===me);
+      const otherS=(e.splits||[]).find(s=>s.name===other);
+      if(!myS&&!otherS) return; // neither involved
+
+      // case 1: other paid, I'm in splits → I owe other (if not paid)
+      if(e.paidBy===other && myS){
+        if(!myS.paid) net -= myS.amount;
+        sharedExpenses.push({e, dir:'i-owe', myAmt:myS.amount, paid:myS.paid});
+      }
+      // case 2: I paid, other is in splits → other owes me (if not paid)
+      else if(e.paidBy===me && otherS){
+        if(!otherS.paid) net += otherS.amount;
+        sharedExpenses.push({e, dir:'they-owe', theirAmt:otherS.amount, paid:otherS.paid});
+      }
+      // case 3: someone else paid, both of us are in splits → no direct debt between us
+    });
+
+    const netAbs=Math.abs(net);
+    let amtClass,label;
+    if(net>0.005){       amtClass='they-owe'; label=`${other} owes you`; }
+    else if(net<-0.005){ amtClass='you-owe';  label=`You owe ${other}`; }
+    else {               amtClass='clear';    label='All settled up'; }
+
+    const did=mkid('rel-'+other);
+
+    // detail rows
+    const detailRows=sharedExpenses.map(({e,dir,myAmt,theirAmt,paid})=>{
+      let dirTxt, amt, statusTxt;
+      if(dir==='i-owe'){
+        dirTxt=`You owe ${other}`;
+        amt=myAmt;
+        statusTxt=paid?'✓ paid':'unpaid';
+      } else {
+        dirTxt=`${other} owes you`;
+        amt=theirAmt;
+        statusTxt=paid?'✓ paid':'unpaid';
+      }
+      return `<div class="rel-expense-row">
+        <div class="rel-exp-left">
+          <div class="rel-exp-name">${e.category} — ${e.desc}</div>
+          <div class="rel-exp-meta">${e.date} · ${dirTxt}</div>
+        </div>
+        <div class="rel-exp-right">
+          <div class="rel-exp-amt" style="color:${dir==='i-owe'?'var(--danger)':'var(--success)'}">${fmt(amt)}</div>
+          <div class="rel-exp-status" style="color:${paid?'var(--success)':'var(--warn)'}">${statusTxt}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="rel-member-card" onclick="toggleRelDetail('${did}')">
+      <div class="rel-top">
+        <div class="rel-left">
+          ${avatarHtml(other,42)}
+          <div>
+            <div style="font-size:14px;font-weight:600">${other}</div>
+            <div style="font-size:12px;color:var(--text3)">${sharedExpenses.length} shared expense${sharedExpenses.length!==1?'s':''}</div>
+          </div>
+        </div>
+        <div class="rel-status">
+          <div class="rel-amount ${amtClass}">${netAbs<0.005?'—':fmt(netAbs)}</div>
+          <div class="rel-label">${label}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">▾ details</div>
+        </div>
+      </div>
+      <div class="rel-detail" id="${did}">
+        ${detailRows||`<div class="detail-none">No shared expenses yet.</div>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+window.toggleRelDetail=function(id){ const el=document.getElementById(id); if(el) el.classList.toggle('open'); };
+
 // ── House Summary ──────────────────────────────────────────────
 function renderHouse(){
   const bal={};
@@ -705,8 +842,8 @@ function renderHouse(){
   const list=document.getElementById('house-list');
   if(!members.length){ list.innerHTML=`<div class="empty">No members yet.</div>`; return; }
   list.innerHTML=members.map(m=>{
-    const b=bal[m.name]||{owed:0,paid:0,rows:[]}; const col=colorFor(m.name);
-    const isMe=!isAdmin&&m.name===currentUser; const id=mkid(m.name); const total=b.owed+b.paid;
+    const b=bal[m.name]||{owed:0,paid:0,rows:[]}; const isMe=!isAdmin&&m.name===currentUser;
+    const id=mkid(m.name); const total=b.owed+b.paid;
     const detailRows=b.rows.map(({e,s})=>`
       <div class="detail-expense-row">
         <div class="detail-expense-left">
@@ -721,10 +858,10 @@ function renderHouse(){
     return `<div class="house-member-card" onclick="toggleDetail('${id}')">
       <div class="house-member-top">
         <div class="house-member-left">
-          <div class="house-avatar" style="background:${col}22;color:${col}">${initials(m.name)}</div>
+          ${avatarHtml(m.name,36)}
           <div>
-            <div class="member-name">${m.name}${isMe?' (you)':''}</div>
-            <div class="member-sub">${b.rows.length} expense${b.rows.length!==1?'s':''} · ${fmt(b.paid)} paid</div>
+            <div class="member-name-txt">${m.name}${isMe?' (you)':''}</div>
+            <div class="member-sub-txt">${b.rows.length} expense${b.rows.length!==1?'s':''} · ${fmt(b.paid)} paid</div>
           </div>
         </div>
         <div style="text-align:right">
@@ -740,69 +877,133 @@ function renderHouse(){
           <div class="detail-metric"><div class="detail-metric-label">Total share</div><div class="detail-metric-val">${fmt(total)}</div></div>
           <div class="detail-metric"><div class="detail-metric-label">% paid</div><div class="detail-metric-val">${total>0?Math.round(b.paid/total*100):100}%</div></div>
         </div>
-        ${detailRows||`<div class="detail-none">Not included in any expenses yet.</div>`}
+        ${detailRows||`<div class="detail-none">Not in any expenses yet.</div>`}
       </div>
     </div>`;
   }).join('');
 }
-window.toggleDetail = function(id){ const el=document.getElementById(id); if(el) el.classList.toggle('open'); };
+window.toggleDetail=function(id){ const el=document.getElementById(id); if(el) el.classList.toggle('open'); };
+
+// ── Profile ────────────────────────────────────────────────────
+function renderProfile(){
+  if(isAdmin) return;
+  const me=currentUser; const prof=getProfile(me); const photo=prof.photo||null;
+  const col=colorFor(me);
+
+  // avatar with edit button
+  const avatarEl=photo
+    ?`<img class="profile-avatar-img" src="${photo}" alt="${me}"/>`
+    :`<div class="profile-avatar-fallback" style="background:${col}22;color:${col}">${initials(me)}</div>`;
+  document.getElementById('profile-avatar-wrap').innerHTML=`
+    ${avatarEl}
+    <label class="profile-avatar-edit" title="Change photo">
+      ✏️
+      <input type="file" accept="image/*" onchange="handleProfilePhoto(event)"/>
+    </label>`;
+
+  document.getElementById('profile-name-display').textContent=me;
+  document.getElementById('profile-name-input').value=me;
+
+  // stats
+  let owed=0,paid=0,count=0;
+  expenses.forEach(e=>{ const s=(e.splits||[]).find(s=>s.name===me); if(s){ count++; s.paid?paid+=s.amount:owed+=s.amount; } });
+  document.getElementById('profile-stats').innerHTML=`
+    <div class="profile-stat"><div class="profile-stat-val" style="color:var(--danger)">${fmt(owed)}</div><div class="profile-stat-label">Owe</div></div>
+    <div class="profile-stat"><div class="profile-stat-val" style="color:var(--success)">${fmt(paid)}</div><div class="profile-stat-label">Paid</div></div>
+    <div class="profile-stat"><div class="profile-stat-val">${count}</div><div class="profile-stat-label">Expenses</div></div>`;
+}
+
+window.handleProfilePhoto=async function(e){
+  const f=e.target.files[0]; if(!f) return;
+  if(f.size>4*1024*1024){ toast('Photo too large — max 4MB'); return; }
+  const b64=await fileToB64(f);
+  await set(ref(db,`profiles/${memberKey(currentUser)}/photo`),b64);
+  toast('Profile photo updated ✓');
+};
+
+window.saveProfileName=async function(){
+  const newName=document.getElementById('profile-name-input').value.trim();
+  if(!newName){ toast('Name cannot be empty'); return; }
+  if(newName===currentUser){ toast('That\'s already your name'); return; }
+  if(members.some(m=>m.name.toLowerCase()===newName.toLowerCase()&&m.name!==currentUser)){ toast('That name is already taken'); return; }
+
+  // update members list
+  const snap=await get(ref(db,'members'));
+  const val=snap.val()||{};
+  const key=Object.entries(val).find(([k,v])=>v.name===currentUser)?.[0];
+  if(key) await update(ref(db,`members/${key}`),{name:newName});
+
+  // move profile to new key
+  const oldProf=getProfile(currentUser);
+  await set(ref(db,`profiles/${memberKey(newName)}`),{...oldProf,name:newName});
+  await remove(ref(db,`profiles/${memberKey(currentUser)}`));
+
+  // update expenses
+  const eSnap=await get(ref(db,'expenses'));
+  const eVal=eSnap.val()||{};
+  for(const [eid,exp] of Object.entries(eVal)){
+    let changed=false;
+    const newSplits=(exp.splits||[]).map(s=>{ if(s.name===currentUser){ changed=true; return {...s,name:newName}; } return s; });
+    const updates={};
+    if(changed) updates.splits=newSplits;
+    if(exp.paidBy===currentUser) updates.paidBy=newName;
+    if(exp.addedBy===currentUser) updates.addedBy=newName;
+    if(Object.keys(updates).length) await update(ref(db,`expenses/${eid}`),updates);
+  }
+
+  // update local session
+  currentUser=newName;
+  localStorage.setItem('hs_user',newName);
+  document.getElementById('top-name').textContent=newName;
+  toast(`Name updated to ${newName} ✓`);
+  renderProfile();
+};
 
 // ── Admin panel ────────────────────────────────────────────────
 function renderAdminPanel(){
   const list=document.getElementById('admin-member-list');
-  if(!members.length){
-    list.innerHTML=`<div class="detail-none" style="padding:.5rem 0">No members yet. Add one below.</div>`;
-    return;
-  }
+  if(!members.length){ list.innerHTML=`<div class="detail-none" style="padding:.5rem 0">No members yet.</div>`; return; }
   list.innerHTML=members.map(m=>{
     const col=colorFor(m.name);
     return `<div class="admin-member-row">
       <div class="admin-member-info">
-        <div class="house-avatar" style="width:30px;height:30px;font-size:12px;background:${col}22;color:${col}">${initials(m.name)}</div>
-        <span class="admin-member-name">${m.name}</span>
+        ${avatarHtml(m.name,30,'hmember-avatar','hmember-avatar-fallback')}
+        <span style="font-size:14px;font-weight:500">${m.name}</span>
       </div>
       <button class="btn-delete" onclick="adminRemoveMember('${m.name}')">Remove</button>
     </div>`;
   }).join('');
 }
-
-window.adminAddMember = async function(){
-  const input=document.getElementById('new-member-input');
-  const name=input.value.trim();
+window.adminAddMember=async function(){
+  const input=document.getElementById('new-member-input'); const name=input.value.trim();
   if(!name){ toast('Enter a name'); return; }
-  if(members.some(m=>m.name.toLowerCase()===name.toLowerCase())){ toast('Member already exists'); return; }
+  if(members.some(m=>m.name.toLowerCase()===name.toLowerCase())){ toast('Already exists'); return; }
   await set(ref(db,`members/${memberKey(name)}`),{name});
-  toast(`${name} added ✓`);
-  input.value='';
+  toast(`${name} added ✓`); input.value='';
 };
 document.getElementById('new-member-input').addEventListener('keydown',e=>{ if(e.key==='Enter') adminAddMember(); });
-
-window.adminRemoveMember = async function(name){
-  if(!confirm(`Remove ${name} from the house? They will no longer be able to log in.`)) return;
-  const snap=await get(ref(db,'members'));
-  const val=snap.val()||{};
+window.adminRemoveMember=async function(name){
+  if(!confirm(`Remove ${name}? They will lose access.`)) return;
+  const snap=await get(ref(db,'members')); const val=snap.val()||{};
   const key=Object.entries(val).find(([k,v])=>v.name===name)?.[0];
   if(key) await remove(ref(db,`members/${key}`));
   toast(`${name} removed`);
 };
-
-window.adminResetExpenses = async function(){
-  if(!confirm('Delete ALL expenses? This cannot be undone.')) return;
-  await set(ref(db,'expenses'),null);
-  toast('All expenses deleted');
+window.adminResetExpenses=async function(){
+  if(!confirm('Delete ALL expenses?')) return;
+  await set(ref(db,'expenses'),null); toast('All expenses deleted');
 };
-
-window.adminResetAll = async function(){
-  const confirmed=prompt('Type RESET to confirm wiping all data (expenses + members):');
-  if(confirmed!=='RESET'){ toast('Cancelled'); return; }
+window.adminResetAll=async function(){
+  const c=prompt('Type RESET to confirm wiping all data:');
+  if(c!=='RESET'){ toast('Cancelled'); return; }
   await set(ref(db,'expenses'),null);
   await set(ref(db,'members'),null);
-  toast('All data reset');
-  handleLogout();
+  await set(ref(db,'profiles'),null);
+  toast('All data reset'); handleLogout();
 };
 
-// ── Add expense form ───────────────────────────────────────────
-let selCat='Other', selMembers=[];
+// ── Add expense ────────────────────────────────────────────────
+let selCat='Other',selMembers=[];
 function renderAddForm(){
   selMembers=selMembers.length?selMembers:(isAdmin?[]:([currentUser]));
   document.getElementById('cat-grid').innerHTML=CATS.map(c=>`<button class="cat-btn ${c===selCat?'active':''}" onclick="selectCat('${c}')">${c}</button>`).join('');
@@ -810,8 +1011,7 @@ function renderAddForm(){
   renderToggles();
 }
 window.selectCat=function(c){
-  selCat=c;
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));
+  selCat=c; document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));
   const di=document.getElementById('desc-input');
   if(!di.value&&['Electric','Rent','Gas','Water','Internet','Trash'].includes(c)) di.value=c+' bill';
 };
@@ -824,8 +1024,7 @@ function renderToggles(){
 }
 window.toggleMember=function(name){ selMembers.includes(name)?selMembers=selMembers.filter(x=>x!==name):selMembers.push(name); renderToggles(); };
 window.updatePreview=function(){
-  const amt=parseFloat(document.getElementById('amount-input').value)||0;
-  const prev=document.getElementById('split-preview');
+  const amt=parseFloat(document.getElementById('amount-input').value)||0; const prev=document.getElementById('split-preview');
   if(!amt||!selMembers.length){ prev.style.display='none'; return; }
   prev.style.display='block';
   prev.innerHTML=`Each of <strong>${selMembers.length}</strong> selected pays <strong>$${(amt/selMembers.length).toFixed(2)}</strong> · ${selMembers.join(', ')}`;
@@ -845,23 +1044,22 @@ window.submitExpense=async function(){
   if(!selMembers.length){ toast('Select at least one member'); return; }
   const share=amount/selMembers.length;
   const expense={
-    category:selCat, desc, total:amount, paidBy,
+    category:selCat,desc,total:amount,paidBy,
     addedBy:isAdmin?'Admin':currentUser,
     date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
     ts:Date.now(),
     splits:selMembers.map(name=>({name,amount:share,paid:name===paidBy}))
   };
   if(expenseFileB64) expense.receiptImg=expenseFileB64;
-  try { await push(ref(db,'expenses'),expense); toast('Expense added ✓'); resetForm(); switchTab('dashboard'); }
-  catch(err){ toast('Error saving — check Firebase config'); console.error(err); }
+  try{ await push(ref(db,'expenses'),expense); toast('Expense added ✓'); resetForm(); switchTab('dashboard'); }
+  catch(err){ toast('Error saving'); console.error(err); }
 };
 
 // ── Mark Paid Modal ────────────────────────────────────────────
 window.openPaidModal=function(expenseId,memberName,amtStr){
   modalExpenseId=expenseId; modalMemberName=memberName;
   document.getElementById('modal-sub').textContent=`Marking ${memberName} as paid — ${amtStr}`;
-  document.getElementById('modal-note').value='';
-  clearProofFile();
+  document.getElementById('modal-note').value=''; clearProofFile();
   document.getElementById('paid-modal').classList.add('open');
 };
 window.closeModal=function(){ document.getElementById('paid-modal').classList.remove('open'); modalExpenseId=null; modalMemberName=null; };
@@ -876,15 +1074,15 @@ window.confirmMarkPaid=async function(){
   const note=document.getElementById('modal-note').value.trim();
   if(note) updated[idx].proofNote=note;
   if(proofFileB64) updated[idx].proofImg=proofFileB64;
-  try { await update(ref(db,`expenses/${modalExpenseId}`),{splits:updated}); toast(`${modalMemberName} marked as paid ✓`); closeModal(); }
+  try{ await update(ref(db,`expenses/${modalExpenseId}`),{splits:updated}); toast(`${modalMemberName} marked as paid ✓`); closeModal(); }
   catch(err){ toast('Error updating'); }
   btn.disabled=false; btn.textContent='Confirm paid';
 };
 
 // ── Delete expense ─────────────────────────────────────────────
 window.deleteExpense=async function(expenseId){
-  if(!confirm('Delete this expense? This cannot be undone.')) return;
-  try { await remove(ref(db,`expenses/${expenseId}`)); toast('Expense deleted'); }
+  if(!confirm('Delete this expense?')) return;
+  try{ await remove(ref(db,`expenses/${expenseId}`)); toast('Expense deleted'); }
   catch(err){ toast('Error deleting'); }
 };
 
@@ -896,7 +1094,7 @@ setTimeout(()=>{
   const savedAdmin=localStorage.getItem('hs_admin')==='1';
   if(savedAdmin){ currentUser='Admin'; isAdmin=true; showApp(); }
   else if(savedUser&&members.some(m=>m.name===savedUser)){ currentUser=savedUser; isAdmin=false; showApp(); }
-  else { currentUser=null; isAdmin=false; localStorage.removeItem('hs_user'); localStorage.removeItem('hs_admin'); showScreen('login-screen'); }
+  else{ currentUser=null; isAdmin=false; localStorage.removeItem('hs_user'); localStorage.removeItem('hs_admin'); showScreen('login-screen'); }
 },1400);
 </script>
 </body>
