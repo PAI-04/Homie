@@ -883,7 +883,11 @@ function renderPeople(){
       </div>
       ${hasAnyUnpaid?`<div class="rel-actions">
         ${isPaySettleOnly
-          ?`<button class="btn-settle" style="background:var(--success-bg);border-color:var(--success);color:var(--success)" onclick="openSettleModal('${other}')">💸 Pay the settle with ${other}</button>`
+          ? (net>0.005
+              // I owe them — show Pay the settle button (I'm the payer)
+              ?`<button class="btn-settle" style="background:var(--success-bg);border-color:var(--success);color:var(--success)" onclick="openSettleModal('${other}')">💸 Pay the settle with ${other}</button>`
+              // They owe me — no button needed, waiting for them to pay
+              :`<span style="font-size:12px;color:var(--text3);font-style:italic">Waiting for ${other} to pay the settle</span>`)
           :`<button class="btn-settle" onclick="openSettleModal('${other}')">⇌ Settle up with ${other}</button>`
         }
       </div>`:''}
