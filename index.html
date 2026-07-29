@@ -1335,12 +1335,40 @@ window.confirmMarkPaid=async function(){
 window.deleteExpense=async function(expenseId){
   if(!confirm('Delete this expense?')) return;
   const expense=expenses.find(e=>e.id===expenseId);
+  if(!expense){ toast('Expense not found'); return; }
+  
   try{
-    if(expense) await logChange('delete',`Deleted expense: ${expense.desc} — ${fmt(expense.total)}`,
-      {expenseId,expenseData:{...expense,id:undefined}});
-    await remove(ref(db,`expenses/${expenseId}`));
-    toast('Expense deleted');
-  } catch(err){ toast('Error deleting'); }
+    // Create minimal undo data (exclude large base64 images from audit log)
+    // This prevents Firebase size limit errors when saving to changes collection
+    const undoData = {
+      expenseId,
+      expenseData: {
+        category: expense.category,
+        desc: expense.desc,
+        total: expense.total,
+        paidBy: expense.paidBy,
+        addedBy: expense.addedBy,
+        date: expense.date,
+        ts: expense.ts,
+        splits: expense.splits.map(s => ({
+          name: s.name,
+          amount: s.amount,
+          paid: s.paid,
+          proofNote: s.proofNote
+        }))
+      }
+    };
+    
+    // Log the change first
+    await logChange('delete', `Deleted expense: ${expense.desc} — ${fmt(expense.total)}`, undoData);
+    
+    // Then delete from main collection
+    await remove(ref(db, `expenses/${expenseId}`));
+    toast('Expense deleted ✓');
+  } catch(err){ 
+    console.error('Delete error:', err);
+    toast('Error deleting — try again'); 
+  }
 };
 
 // ── Boot ───────────────────────────────────────────────────────
