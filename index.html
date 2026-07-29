@@ -592,10 +592,15 @@ function avatarHtml(name,size=36,cls='hmember-avatar',fcls='hmember-avatar-fallb
 }
 
 // ── Audit log helpers ──────────────────────────────────────────
+// Firebase rejects any object containing `undefined`. This strips them out.
+function clean(obj){
+  if(obj===undefined||obj===null) return null;
+  return JSON.parse(JSON.stringify(obj, (k,v)=> v===undefined ? null : v));
+}
 async function logChange(type, desc, undoData){
   // type: 'add'|'delete'|'paid'|'settle'
   // undoData: what to restore when undone
-  const entry = { type, desc, ts: Date.now(), time: now(), undoData };
+  const entry = clean({ type, desc, ts: Date.now(), time: now(), undoData });
   await push(ref(db,'changes'), entry);
 }
 
@@ -1338,40 +1343,34 @@ window.deleteExpense=async function(expenseId){
   if(!expense){ toast('Expense not found'); return; }
   
   try{
-    // Create minimal undo data (exclude large base64 images from audit log)
-    // This prevents Firebase size limit errors when saving to changes collection
-    const undoData = {
-      expenseId,
-      expenseData: {
-        category: expense.category,
-        desc: expense.desc,
-        total: expense.total,
-        paidBy: expense.paidBy,
-        addedBy: expense.addedBy,
-        date: expense.date,
-        ts: expense.ts,
-        splits: expense.splits.map(s => ({
-          name: s.name,
-          amount: s.amount,
-          paid: s.paid,
-          proofNote: s.proofNote
-        }))
-      }
-    };
-    
+    // Copy the expense, drop the local-only `id`, and strip any undefined
+    // fields (Firebase rejects writes containing undefined).
+    const expenseData = {...expense};
+    delete expenseData.id;
+    // Drop big base64 blobs so the audit log stays light
+    delete expenseData.receiptImg;
+    if(Array.isArray(expenseData.splits)){
+      expenseData.splits = expenseData.splits.map(s=>{
+        const c={...s}; delete c.proofImg; return c;
+      });
+    }
+
+    const undoData = clean({ expenseId, expenseData });
+
     // Log the change first
     await logChange('delete', `Deleted expense: ${expense.desc} — ${fmt(expense.total)}`, undoData);
-    
+
     // Then delete from main collection
     await remove(ref(db, `expenses/${expenseId}`));
     toast('Expense deleted ✓');
-  } catch(err){ 
+  } catch(err){
     console.error('Delete error:', err);
-    toast('Error deleting — try again'); 
+    toast('Delete failed: '+(err&&err.message?err.message:'unknown error'), 5000);
   }
 };
 
 // ── Boot ───────────────────────────────────────────────────────
+console.log('%cHouseSplit v2.1 — undefined-safe audit log','color:#3b82f6;font-weight:bold');
 startListening();
 setTimeout(()=>{
   hideLoading();
