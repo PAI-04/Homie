@@ -282,6 +282,74 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .lightbox img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:var(--radius);}
 .lightbox-close{position:absolute;top:1rem;right:1rem;color:#fff;font-size:26px;cursor:pointer;background:rgba(0,0,0,0.5);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
 
+/* SAVINGS */
+.sav-hero{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;}
+.sav-hero-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.25rem;}
+.sav-hero-val{font-size:32px;font-weight:700;line-height:1;color:var(--success);}
+.sav-hero-sub{font-size:13px;color:var(--text3);margin-top:.35rem;}
+.sav-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem;margin-bottom:.7rem;transition:border-color .15s;}
+.sav-card:hover{border-color:var(--border2);}
+.sav-card.paused{opacity:.62;border-style:dashed;}
+.sav-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;}
+.sav-left{display:flex;align-items:flex-start;gap:.7rem;flex:1;min-width:0;}
+.sav-emoji{font-size:26px;line-height:1.15;flex-shrink:0;}
+.sav-title{font-size:15px;font-weight:600;}
+.sav-meta{font-size:12px;color:var(--text3);margin-top:2px;}
+.sav-chip{display:inline-block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:6px;background:var(--surface2);color:var(--text2);margin-right:5px;}
+.sav-chip.live{background:var(--success-bg);color:var(--success);}
+.sav-chip.paused{background:var(--warn-bg);color:var(--warn);}
+.sav-chip.once{background:var(--accent-bg);color:var(--accent-text);}
+.sav-right{text-align:right;flex-shrink:0;}
+.sav-amt{font-size:19px;font-weight:700;color:var(--success);}
+.sav-amt-label{font-size:11px;color:var(--text3);margin-top:1px;}
+.progress-wrap{margin-top:.85rem;}
+.progress-bar{height:8px;border-radius:6px;background:var(--surface2);overflow:hidden;}
+.progress-fill{height:100%;background:var(--success);border-radius:6px;transition:width .4s ease;}
+.progress-fill.over{background:var(--accent);}
+.progress-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:5px;}
+.sav-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:.85rem;}
+.sav-stat{background:var(--surface2);border-radius:var(--radius);padding:.55rem .6rem;text-align:center;}
+.sav-stat-val{font-size:15px;font-weight:700;}
+.sav-stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-top:1px;}
+.sav-expand{font-size:11px;color:var(--text3);text-align:right;margin-top:.6rem;cursor:pointer;user-select:none;}
+.sav-expand:hover{color:var(--accent);}
+.sav-detail{display:none;margin-top:.85rem;padding-top:.85rem;border-top:0.5px solid var(--border);}
+.sav-detail.open{display:block;}
+.sav-sub-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:.75rem 0 .45rem;}
+.sav-sub-label:first-child{margin-top:0;}
+.sav-member-row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.5rem 0;border-bottom:0.5px solid var(--border);}
+.sav-member-row:last-child{border-bottom:none;}
+.sav-member-left{display:flex;align-items:center;gap:.55rem;min-width:0;}
+.sav-member-name{font-size:13px;font-weight:500;}
+.sav-member-right{text-align:right;flex-shrink:0;font-size:12px;}
+.sav-contrib-row{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.45rem 0;border-bottom:0.5px solid var(--border);font-size:13px;flex-wrap:wrap;}
+.sav-contrib-row:last-child{border-bottom:none;}
+.sav-contrib-left{flex:1;min-width:0;}
+.sav-contrib-name{font-size:13px;font-weight:500;}
+.sav-contrib-date{font-size:11px;color:var(--text3);}
+.sav-contrib-right{display:flex;align-items:center;gap:.4rem;flex-shrink:0;}
+.sav-overdue{color:var(--danger);font-weight:600;}
+
+/* SAVINGS ADMIN BUILDER */
+.plan-form-row{margin-bottom:.85rem;}
+.plan-form-row label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500;}
+.plan-form-row input,.plan-form-row select{width:100%;padding:.55rem .85rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-size:14px;outline:none;transition:border-color .15s;font-family:inherit;}
+.plan-form-row input:focus,.plan-form-row select:focus{border-color:var(--accent);}
+.plan-two-col{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.emoji-grid{display:flex;flex-wrap:wrap;gap:5px;}
+.emoji-btn{width:36px;height:36px;font-size:18px;border-radius:var(--radius);border:0.5px solid var(--border);background:transparent;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.emoji-btn.active{background:var(--accent-bg);border-color:var(--accent);}
+.plan-admin-row{display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;padding:.7rem 0;border-bottom:0.5px solid var(--border);}
+.plan-admin-row:last-child{border-bottom:none;}
+.plan-admin-left{flex:1;min-width:0;}
+.plan-admin-actions{display:flex;gap:.35rem;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+.btn-tiny{font-size:11px;padding:3px 9px;border-radius:8px;border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn-tiny:hover{background:var(--surface2);color:var(--text);}
+.btn-tiny.warn:hover{background:var(--warn-bg);color:var(--warn);border-color:var(--warn);}
+.btn-tiny.danger:hover{background:var(--danger-bg);color:var(--danger);border-color:var(--danger);}
+.btn-tiny.go:hover{background:var(--success-bg);color:var(--success);border-color:var(--success);}
+.plan-hint{font-size:11px;color:var(--text3);margin-top:.5rem;line-height:1.45;}
+
 /* MISC */
 .empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:14px;}
 .empty-icon{font-size:2rem;margin-bottom:.5rem;}
@@ -328,6 +396,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <div class="modal-footer">
       <button class="btn-ghost" onclick="closeModal()">Cancel</button>
       <button class="btn-primary" style="width:auto;padding:.55rem 1.25rem" id="modal-confirm-btn" onclick="confirmMarkPaid()">Confirm paid</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTRIBUTION PAID MODAL -->
+<div class="modal-overlay" id="contrib-modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title">Confirm contribution</div>
+    <div class="modal-sub" id="contrib-modal-sub"></div>
+    <label class="modal-label">Note (optional)</label>
+    <textarea class="modal-note" id="contrib-note" placeholder="e.g. Sent via Zelle…"></textarea>
+    <label class="modal-label">Upload proof (optional)</label>
+    <div class="upload-zone">
+      <input type="file" id="contrib-file-input" accept="image/*,.pdf" onchange="handleContribFile(event)"/>
+      <div class="upload-zone-icon">📎</div>
+      <div class="upload-zone-text">Tap to upload receipt or screenshot</div>
+      <div class="upload-zone-sub">Max 4MB</div>
+    </div>
+    <div class="upload-preview" id="contrib-preview" style="display:none">
+      <img id="contrib-preview-img" src="" alt=""/>
+      <div class="upload-preview-info">
+        <div class="upload-preview-name" id="contrib-preview-name"></div>
+        <div class="upload-preview-size" id="contrib-preview-size"></div>
+      </div>
+      <button class="upload-remove" onclick="clearContribFile()">✕</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeContribModal()">Cancel</button>
+      <button class="btn-primary" style="width:auto;padding:.55rem 1.25rem" id="contrib-confirm-btn" onclick="confirmContribPaid()">Confirm paid</button>
     </div>
   </div>
 </div>
@@ -416,6 +513,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     <button class="tab" onclick="switchTab('mine')">My balance</button>
     <button class="tab" onclick="switchTab('people')">People</button>
     <button class="tab" onclick="switchTab('house')">House</button>
+    <button class="tab" onclick="switchTab('savings')">💰 Savings</button>
     <button class="tab" onclick="switchTab('profile')">Profile</button>
   </div>
   <div class="content">
@@ -484,6 +582,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <div id="house-list"></div>
     </div>
 
+    <div id="tab-savings" style="display:none">
+      <div class="sav-hero">
+        <div class="sav-hero-label">Total saved by the house</div>
+        <div class="sav-hero-val" id="sav-total">$0.00</div>
+        <div class="sav-hero-sub" id="sav-total-sub"></div>
+      </div>
+      <div class="section-header" style="margin-top:0">
+        <div class="section-title">Savings plans</div>
+        <span style="font-size:12px;color:var(--text3)" id="sav-count"></span>
+      </div>
+      <div id="savings-list"></div>
+    </div>
+
     <div id="tab-profile" style="display:none">
       <div class="profile-card">
         <div class="profile-avatar-wrap" id="profile-avatar-wrap"></div>
@@ -507,6 +618,73 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           <input type="text" id="new-member-input" placeholder="New member name…" maxlength="24" autocomplete="off"/>
           <button onclick="adminAddMember()">Add</button>
         </div>
+      </div>
+
+      <!-- Savings / recurring plans -->
+      <div class="admin-panel">
+        <div class="admin-panel-title">💰 Create savings / recurring plan</div>
+
+        <div class="plan-form-row">
+          <label>Savings title</label>
+          <input type="text" id="plan-title" placeholder="e.g. Vacation Fund, Emergency Pot" maxlength="40"/>
+        </div>
+
+        <div class="plan-form-row">
+          <label>Icon</label>
+          <div class="emoji-grid" id="plan-emoji-grid"></div>
+        </div>
+
+        <div class="plan-two-col">
+          <div class="plan-form-row">
+            <label>Amount per member</label>
+            <input type="number" id="plan-amount" placeholder="0.00" min="0.01" step="0.01"/>
+          </div>
+          <div class="plan-form-row">
+            <label>Repeats</label>
+            <select id="plan-freq">
+              <option value="once">One-time only</option>
+              <option value="daily">Daily</option>
+              <option value="weekly" selected>Weekly</option>
+              <option value="biweekly">Every 2 weeks</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="plan-two-col">
+          <div class="plan-form-row">
+            <label>Starts on</label>
+            <input type="date" id="plan-start"/>
+          </div>
+          <div class="plan-form-row">
+            <label>Goal target (optional)</label>
+            <input type="number" id="plan-goal" placeholder="e.g. 2000" min="0" step="0.01"/>
+          </div>
+        </div>
+
+        <div class="plan-form-row">
+          <label>Assign to members</label>
+          <div class="member-toggles" id="plan-member-toggles"></div>
+          <div class="split-preview" id="plan-preview" style="display:none"></div>
+        </div>
+
+        <div class="form-footer">
+          <button class="btn-ghost" onclick="resetPlanForm()">Clear</button>
+          <button class="btn-primary" style="width:auto;padding:.55rem 1.25rem" onclick="adminCreatePlan()">Create plan</button>
+        </div>
+
+        <div class="plan-hint">
+          Contributions are generated automatically once the due date passes and someone opens the app. Missed cycles are caught up in one go, so nothing is skipped.
+        </div>
+      </div>
+
+      <!-- Existing plans -->
+      <div class="admin-panel">
+        <div class="admin-panel-title">
+          <span>📋 Active plans</span>
+          <span style="font-size:11px;color:var(--text3);font-weight:400">Pause, run early, or delete</span>
+        </div>
+        <div id="admin-plan-list"></div>
       </div>
 
       <!-- Past changes with undo -->
@@ -569,8 +747,39 @@ let settleFileB64   = null;
 let settleNetAmt    = 0;
 let settleIsPayOnly = false;  // true = only "Owe after settled" expense remains, no new expense to create
 
+let savingsPlans   = [];
+let contributions  = [];
+let contribMap     = {};
+let contribFileB64 = null;
+let contribTarget  = null;   // {planId, contribId, member, amount}
+let generating     = false;
+
 const CATS   = ['Electric','Rent','Gas','Water','Internet','Groceries','Trash','Other'];
 const COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4','#f97316'];
+const PLAN_EMOJIS = ['💰','🏖️','🏠','🚗','🎉','🛠️','🎓','❤️','🍕','✈️'];
+const FREQ_LABEL = {once:'One-time',daily:'Daily',weekly:'Weekly',biweekly:'Every 2 weeks',monthly:'Monthly'};
+
+// Advance a timestamp by one cycle. For monthly, anchorDay is the day-of-month
+// the plan originally started on — so a plan starting Jan 31 lands on Feb 28,
+// then Mar 31 again, instead of permanently sliding to the 28th.
+function addPeriod(ts,freq,anchorDay){
+  const d=new Date(ts);
+  if(freq==='daily')         d.setDate(d.getDate()+1);
+  else if(freq==='weekly')   d.setDate(d.getDate()+7);
+  else if(freq==='biweekly') d.setDate(d.getDate()+14);
+  else if(freq==='monthly'){
+    const day=anchorDay||d.getDate();
+    d.setDate(1);
+    d.setMonth(d.getMonth()+1);
+    const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+    d.setDate(Math.min(day,last));
+  }
+  return d.getTime();
+}
+function dateStr(ts){ return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+function todayISO(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+// Parse a yyyy-mm-dd input into a local-noon timestamp (avoids timezone drift)
+function isoToTs(iso){ const [y,m,d]=iso.split('-').map(Number); return new Date(y,m-1,d,12,0,0,0).getTime(); }
 
 function fmt(n){ return '$'+Number(n).toFixed(2); }
 function initials(n){ return (n||'?').trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
@@ -651,6 +860,72 @@ function startListening(){
     changes.sort((a,b)=>b.ts-a.ts);
     if(isAdmin&&activeTab==='admin') renderAdminPanel();
   });
+  onValue(ref(db,'savings'),snap=>{
+    const val=snap.val()||{};
+    savingsPlans=Object.entries(val).map(([id,p])=>({...p,id}));
+    savingsPlans.sort((a,b)=>(b.createdTs||0)-(a.createdTs||0));
+    generateDueContributions();
+    if(currentUser||isAdmin) renderAll();
+    if(isAdmin&&activeTab==='admin') renderAdminPanel();
+  });
+  onValue(ref(db,'contributions'),snap=>{
+    const val=snap.val()||{};
+    contributions=[]; contribMap={};
+    Object.entries(val).forEach(([planId,items])=>{
+      Object.entries(items||{}).forEach(([cid,c])=>{
+        const rec={...c,id:cid,planId};
+        contributions.push(rec);
+        contribMap[planId+'/'+cid]=rec;
+      });
+    });
+    contributions.sort((a,b)=>(b.dueTs||0)-(a.dueTs||0));
+    if(currentUser||isAdmin) renderAll();
+  });
+}
+
+// ── Auto-generate due contributions ────────────────────────────
+// No server/cron here, so cycles are created whenever the app is opened
+// and a due date has passed. Keys are deterministic (dueTs + member) so
+// two devices generating at once can never create duplicates.
+async function generateDueContributions(){
+  if(generating) return;
+  generating=true;
+  try{
+    const nowTs=Date.now();
+    for(const plan of savingsPlans){
+      if(!plan.active) continue;
+      if(!Array.isArray(plan.members)||!plan.members.length) continue;
+      let due=plan.nextDue||plan.startTs;
+      if(!due) continue;
+      const anchorDay=new Date(plan.startTs||due).getDate();
+      const updates={}; let cycles=0;
+      while(due<=nowTs&&cycles<120){
+        const ds=dateStr(due);
+        plan.members.forEach(name=>{
+          const key=due+'__'+memberKey(name);
+          if(contribMap[plan.id+'/'+key]) return;   // already exists, never overwrite
+          updates['contributions/'+plan.id+'/'+key]=clean({
+            planId:plan.id, planTitle:plan.title, planEmoji:plan.emoji||'💰',
+            member:name, amount:plan.amount, paid:false,
+            dueTs:due, dueDate:ds, createdTs:Date.now()
+          });
+        });
+        cycles++;
+        if(plan.frequency==='once') break;
+        due=addPeriod(due,plan.frequency,anchorDay);
+      }
+      if(cycles>0){
+        if(plan.frequency==='once'){
+          updates['savings/'+plan.id+'/active']=false;
+          updates['savings/'+plan.id+'/nextDue']=null;
+        } else {
+          updates['savings/'+plan.id+'/nextDue']=due;
+        }
+        if(Object.keys(updates).length) await update(ref(db),updates);
+      }
+    }
+  } catch(err){ console.error('Auto-generate error:',err); }
+  generating=false;
 }
 
 // ── Login ──────────────────────────────────────────────────────
@@ -715,9 +990,9 @@ function renderTopAvatar(){
 let activeTab='dashboard';
 window.switchTab=function(t){
   activeTab=t;
-  ['dashboard','add','mine','people','house','profile','admin'].forEach(x=>{ const el=document.getElementById('tab-'+x); if(el) el.style.display=x===t?'block':'none'; });
+  ['dashboard','add','mine','people','house','savings','profile','admin'].forEach(x=>{ const el=document.getElementById('tab-'+x); if(el) el.style.display=x===t?'block':'none'; });
   document.querySelectorAll('.tab').forEach(el=>{
-    const map={'Dashboard':'dashboard','+ Add':'add','My balance':'mine','People':'people','House':'house','Profile':'profile','⚙️ Admin':'admin'};
+    const map={'Dashboard':'dashboard','+ Add':'add','My balance':'mine','People':'people','House':'house','💰 Savings':'savings','Profile':'profile','⚙️ Admin':'admin'};
     el.classList.toggle('active',map[el.textContent]===t);
   });
   if(t==='add') renderAddForm();
@@ -730,6 +1005,7 @@ function renderAll(){
   if(activeTab==='mine'&&!isAdmin) renderMine();
   if(activeTab==='people'&&!isAdmin) renderPeople();
   if(activeTab==='house') renderHouse();
+  if(activeTab==='savings') renderSavings();
 }
 
 // ── Dashboard ──────────────────────────────────────────────────
@@ -1112,6 +1388,157 @@ function renderHouse(){
 }
 window.toggleDetail=function(id){ const el=document.getElementById(id); if(el) el.classList.toggle('open'); };
 
+// ── Savings dashboard (visible to everyone) ────────────────────
+function planStats(planId){
+  const items=contributions.filter(c=>c.planId===planId);
+  let saved=0,pending=0;
+  const byMember={};
+  items.forEach(c=>{
+    if(!byMember[c.member]) byMember[c.member]={paid:0,pending:0,rows:[]};
+    if(c.paid){ saved+=c.amount; byMember[c.member].paid+=c.amount; }
+    else      { pending+=c.amount; byMember[c.member].pending+=c.amount; }
+    byMember[c.member].rows.push(c);
+  });
+  return {items,saved,pending,byMember};
+}
+
+function renderSavings(){
+  const list=document.getElementById('savings-list');
+  let grandSaved=0,grandPending=0;
+  savingsPlans.forEach(p=>{ const s=planStats(p.id); grandSaved+=s.saved; grandPending+=s.pending; });
+  document.getElementById('sav-total').textContent=fmt(grandSaved);
+  document.getElementById('sav-total-sub').textContent=
+    grandPending>0 ? `${fmt(grandPending)} still pending across all plans` : 'Everything contributed is fully paid up';
+  document.getElementById('sav-count').textContent=
+    savingsPlans.length+' plan'+(savingsPlans.length!==1?'s':'');
+
+  if(!savingsPlans.length){
+    list.innerHTML=`<div class="empty"><div class="empty-icon">💰</div>No savings plans yet.<br/><span style="font-size:13px">An admin can create one from the Admin tab.</span></div>`;
+    return;
+  }
+
+  list.innerHTML=savingsPlans.map(p=>{
+    const {items,saved,pending,byMember}=planStats(p.id);
+    const goal=Number(p.goal)||0;
+    const pct=goal>0?Math.min(100,(saved/goal)*100):0;
+    const nowTs=Date.now();
+    const did='sav-'+p.id.replace(/[^a-zA-Z0-9]/g,'');
+
+    const statusChip=p.frequency==='once'
+      ?`<span class="sav-chip once">One-time</span>`
+      :(p.active?`<span class="sav-chip live">Active</span>`:`<span class="sav-chip paused">Paused</span>`);
+
+    const progress=goal>0?`
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill${saved>=goal?' over':''}" style="width:${pct}%"></div></div>
+        <div class="progress-labels"><span>${fmt(saved)} saved</span><span>Goal ${fmt(goal)} · ${Math.round(pct)}%</span></div>
+      </div>`:'';
+
+    const memberRows=Object.entries(byMember).sort((a,b)=>b[1].paid-a[1].paid).map(([name,m])=>`
+      <div class="sav-member-row">
+        <div class="sav-member-left">
+          ${avatarHtml(name,28)}
+          <span class="sav-member-name">${name}${(!isAdmin&&name===currentUser)?' (you)':''}</span>
+        </div>
+        <div class="sav-member-right">
+          <span style="color:var(--success);font-weight:600">${fmt(m.paid)}</span>
+          ${m.pending>0?`<span style="color:var(--text3)"> · </span><span style="color:var(--warn);font-weight:600">${fmt(m.pending)} due</span>`:''}
+        </div>
+      </div>`).join('') || `<div class="detail-none">No contributions generated yet.</div>`;
+
+    const contribRows=items.slice().sort((a,b)=>b.dueTs-a.dueTs).slice(0,40).map(c=>{
+      const canMark=!c.paid&&(isAdmin||c.member===currentUser);
+      const overdue=!c.paid&&c.dueTs<nowTs;
+      const proofEl=c.proofImg?`<img class="proof-mini" src="${c.proofImg}" onclick="openLightbox('${c.proofImg}')" title="View proof"/>`:
+                    (c.proofNote&&c.paid?`<span title="${c.proofNote}" style="cursor:help;font-size:12px">📝</span>`:'');
+      return `<div class="sav-contrib-row">
+        <div class="sav-contrib-left">
+          <div class="sav-contrib-name">${c.member}</div>
+          <div class="sav-contrib-date ${overdue?'sav-overdue':''}">${c.dueDate}${overdue?' · overdue':''}</div>
+        </div>
+        <div class="sav-contrib-right">
+          <span style="font-weight:600">${fmt(c.amount)}</span>
+          <span class="badge ${c.paid?'badge-paid':'badge-owed'}">${c.paid?'paid':'due'}</span>
+          ${proofEl}
+          ${canMark?`<button class="btn-mark" onclick="openContribModal('${c.planId}','${c.id}')">Mark paid</button>`:''}
+        </div>
+      </div>`;
+    }).join('') || `<div class="detail-none">Nothing generated yet.</div>`;
+
+    const nextLine=(p.active&&p.frequency!=='once'&&p.nextDue)
+      ?` · next ${dateStr(p.nextDue)}`:'';
+
+    return `<div class="sav-card${p.active?'':' paused'}">
+      <div class="sav-top">
+        <div class="sav-left">
+          <div class="sav-emoji">${p.emoji||'💰'}</div>
+          <div style="min-width:0">
+            <div class="sav-title">${p.title}</div>
+            <div class="sav-meta">${statusChip}${fmt(p.amount)} · ${FREQ_LABEL[p.frequency]||p.frequency}${nextLine}</div>
+            <div class="sav-meta">${(p.members||[]).length} member${(p.members||[]).length!==1?'s':''}: ${(p.members||[]).join(', ')}</div>
+          </div>
+        </div>
+        <div class="sav-right">
+          <div class="sav-amt">${fmt(saved)}</div>
+          <div class="sav-amt-label">saved</div>
+        </div>
+      </div>
+      ${progress}
+      <div class="sav-stats">
+        <div class="sav-stat"><div class="sav-stat-val" style="color:var(--success)">${fmt(saved)}</div><div class="sav-stat-label">Collected</div></div>
+        <div class="sav-stat"><div class="sav-stat-val" style="color:${pending>0?'var(--warn)':'var(--text3)'}">${fmt(pending)}</div><div class="sav-stat-label">Pending</div></div>
+        <div class="sav-stat"><div class="sav-stat-val">${items.length}</div><div class="sav-stat-label">Entries</div></div>
+      </div>
+      <div class="sav-expand" onclick="toggleSavDetail('${did}')">▾ breakdown &amp; history</div>
+      <div class="sav-detail" id="${did}">
+        <div class="sav-sub-label">Per member</div>
+        ${memberRows}
+        <div class="sav-sub-label">Contribution history</div>
+        ${contribRows}
+      </div>
+    </div>`;
+  }).join('');
+}
+window.toggleSavDetail=function(id){ const el=document.getElementById(id); if(el) el.classList.toggle('open'); };
+
+// ── Contribution paid modal ────────────────────────────────────
+window.handleContribFile=async function(e){
+  const f=e.target.files[0]; if(!f) return;
+  if(f.size>4*1024*1024){ toast('File too large — max 4MB'); return; }
+  contribFileB64=await fileToB64(f);
+  document.getElementById('contrib-preview-img').src=f.type.startsWith('image/')?contribFileB64:'https://cdn-icons-png.flaticon.com/512/337/337946.png';
+  document.getElementById('contrib-preview-name').textContent=f.name;
+  document.getElementById('contrib-preview-size').textContent=fmtSize(f.size);
+  document.getElementById('contrib-preview').style.display='flex';
+};
+window.clearContribFile=function(){ contribFileB64=null; document.getElementById('contrib-file-input').value=''; document.getElementById('contrib-preview').style.display='none'; };
+window.openContribModal=function(planId,contribId){
+  const c=contribMap[planId+'/'+contribId]; if(!c){ toast('Entry not found'); return; }
+  contribTarget={planId,contribId,member:c.member,amount:c.amount};
+  document.getElementById('contrib-modal-sub').textContent=
+    `${c.member} — ${fmt(c.amount)} toward "${c.planTitle||'savings'}" (due ${c.dueDate})`;
+  document.getElementById('contrib-note').value='';
+  clearContribFile();
+  document.getElementById('contrib-modal').classList.add('open');
+};
+window.closeContribModal=function(){ document.getElementById('contrib-modal').classList.remove('open'); contribTarget=null; };
+document.getElementById('contrib-modal').addEventListener('click',function(e){ if(e.target===this) closeContribModal(); });
+window.confirmContribPaid=async function(){
+  if(!contribTarget) return;
+  const {planId,contribId,member,amount}=contribTarget;
+  const btn=document.getElementById('contrib-confirm-btn'); btn.disabled=true; btn.textContent='Saving…';
+  const note=document.getElementById('contrib-note').value.trim();
+  const patch=clean({ paid:true, paidTs:Date.now(), paidBy:isAdmin?'Admin':currentUser,
+                      proofNote:note||null, proofImg:contribFileB64||null });
+  try{
+    await update(ref(db,`contributions/${planId}/${contribId}`),patch);
+    await logChange('contrib',`${member} contributed ${fmt(amount)} to savings`,
+      clean({ planId, contribId }));
+    toast(`Contribution marked paid ✓`); closeContribModal();
+  } catch(err){ console.error(err); toast('Error: '+(err&&err.message?err.message:'try again'),4000); }
+  btn.disabled=false; btn.textContent='Confirm paid';
+};
+
 // ── Profile ────────────────────────────────────────────────────
 function renderProfile(){
   if(isAdmin) return;
@@ -1171,12 +1598,16 @@ function renderAdminPanel(){
     <button class="btn-delete" onclick="adminRemoveMember('${m.name}')">Remove</button>
   </div>`).join(''); }
 
+  // savings plan builder + plan list
+  renderPlanForm();
+  renderAdminPlans();
+
   // past changes
   const clist=document.getElementById('past-changes-list');
   if(!changes.length){ clist.innerHTML=`<div class="no-changes">No changes recorded yet.</div>`; return; }
   clist.innerHTML=changes.map(c=>{
-    const typeLabel={'add':'Added','delete':'Deleted','paid':'Marked paid','settle':'Settled up'}[c.type]||c.type;
-    const typeClass={'add':'add','delete':'delete','paid':'paid','settle':'settle'}[c.type]||'';
+    const typeLabel={'add':'Added','delete':'Deleted','paid':'Marked paid','settle':'Settled up','contrib':'Contribution','plan':'Savings plan'}[c.type]||c.type;
+    const typeClass={'add':'add','delete':'delete','paid':'paid','settle':'settle','contrib':'add','plan':'paid'}[c.type]||'';
     return `<div class="change-row">
       <div class="change-left">
         <div class="change-type ${typeClass}">${typeLabel}</div>
@@ -1212,6 +1643,17 @@ window.undoChange=async function(changeId){
       await update(ref(db,`expenses/${u.expenseId}`),{splits:u.originalSplits});
       toast('Payment undone ✓');
     }
+    else if(change.type==='contrib'){
+      // undo contribution = flip it back to unpaid and clear proof
+      await update(ref(db,`contributions/${u.planId}/${u.contribId}`),
+        {paid:false,paidTs:null,paidBy:null,proofNote:null,proofImg:null});
+      toast('Contribution reverted to unpaid ✓');
+    }
+    else if(change.type==='plan'){
+      // plan creation is not auto-reversed (would orphan contributions)
+      toast('Delete the plan from the Active plans panel instead');
+      return;
+    }
     else if(change.type==='settle'){
       // undo settle = restore all original splits + delete new expense if created
       for(const [expId,snap] of Object.entries(u.settledExpenses||{})){
@@ -1225,6 +1667,130 @@ window.undoChange=async function(changeId){
     await remove(ref(db,`changes/${changeId}`));
   } catch(err){ toast('Undo failed — try again'); console.error(err); }
 };
+
+// ── Admin: savings plans ───────────────────────────────────────
+let planEmoji='💰', planMembers=[];
+function renderPlanForm(){
+  document.getElementById('plan-emoji-grid').innerHTML=PLAN_EMOJIS.map(e=>
+    `<button class="emoji-btn ${e===planEmoji?'active':''}" onclick="selectPlanEmoji('${e}')">${e}</button>`).join('');
+  document.getElementById('plan-member-toggles').innerHTML=members.map(m=>`
+    <button class="member-toggle ${planMembers.includes(m.name)?'active':''}" onclick="togglePlanMember('${m.name}')">
+      <span class="check-circle">${planMembers.includes(m.name)?'✓':''}</span>${m.name}
+    </button>`).join('') || `<div class="detail-none" style="padding:.3rem 0">Add members first.</div>`;
+  const st=document.getElementById('plan-start');
+  if(!st.value) st.value=todayISO();
+  updatePlanPreview();
+}
+window.selectPlanEmoji=function(e){ planEmoji=e; renderPlanForm(); };
+window.togglePlanMember=function(name){
+  planMembers.includes(name)?planMembers=planMembers.filter(x=>x!==name):planMembers.push(name);
+  renderPlanForm();
+};
+window.updatePlanPreview=function(){
+  const amt=parseFloat(document.getElementById('plan-amount').value)||0;
+  const freq=document.getElementById('plan-freq').value;
+  const prev=document.getElementById('plan-preview');
+  if(!amt||!planMembers.length){ prev.style.display='none'; return; }
+  prev.style.display='block';
+  const per=amt*planMembers.length;
+  const label=freq==='once'?'in total, once':`per ${FREQ_LABEL[freq].toLowerCase()} cycle`;
+  prev.innerHTML=`<strong>${planMembers.length}</strong> member${planMembers.length!==1?'s':''} × <strong>${fmt(amt)}</strong> = <strong>${fmt(per)}</strong> ${label} · ${planMembers.join(', ')}`;
+};
+window.resetPlanForm=function(){
+  planEmoji='💰'; planMembers=[];
+  ['plan-title','plan-amount','plan-goal'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('plan-freq').value='weekly';
+  document.getElementById('plan-start').value=todayISO();
+  document.getElementById('plan-preview').style.display='none';
+  renderPlanForm();
+};
+window.adminCreatePlan=async function(){
+  const title=document.getElementById('plan-title').value.trim();
+  const amount=parseFloat(document.getElementById('plan-amount').value);
+  const freq=document.getElementById('plan-freq').value;
+  const startIso=document.getElementById('plan-start').value;
+  const goalRaw=document.getElementById('plan-goal').value;
+  if(!title){ toast('Give the savings a title'); return; }
+  if(!amount||amount<=0){ toast('Enter a valid amount'); return; }
+  if(!planMembers.length){ toast('Assign at least one member'); return; }
+  if(!startIso){ toast('Pick a start date'); return; }
+  const startTs=isoToTs(startIso);
+  const plan=clean({
+    title, emoji:planEmoji, amount, frequency:freq,
+    members:planMembers.slice(),
+    goal:goalRaw?parseFloat(goalRaw):null,
+    startTs, nextDue:startTs, active:true,
+    createdBy:isAdmin?'Admin':currentUser, createdTs:Date.now()
+  });
+  try{
+    const pushed=await push(ref(db,'savings'),plan);
+    await logChange('plan',`Created savings plan: ${title} — ${fmt(amount)} ${FREQ_LABEL[freq].toLowerCase()}`,
+      clean({planId:pushed.key}));
+    toast(`"${title}" created ✓`);
+    resetPlanForm();
+  } catch(err){ console.error(err); toast('Error: '+(err&&err.message?err.message:'try again'),4000); }
+};
+window.adminTogglePlan=async function(planId){
+  const p=savingsPlans.find(x=>x.id===planId); if(!p) return;
+  try{
+    await update(ref(db,`savings/${planId}`),{active:!p.active});
+    toast(p.active?'Plan paused':'Plan resumed ✓');
+    if(!p.active) setTimeout(generateDueContributions,400);
+  } catch(err){ toast('Error updating plan'); }
+};
+window.adminRunPlanNow=async function(planId){
+  const p=savingsPlans.find(x=>x.id===planId); if(!p) return;
+  if(!confirm(`Generate one cycle of "${p.title}" right now?`)) return;
+  try{
+    const due=Date.now();
+    const ds=dateStr(due);
+    const updates={};
+    (p.members||[]).forEach(name=>{
+      const key=due+'__'+memberKey(name);
+      updates['contributions/'+planId+'/'+key]=clean({
+        planId, planTitle:p.title, planEmoji:p.emoji||'💰',
+        member:name, amount:p.amount, paid:false,
+        dueTs:due, dueDate:ds, createdTs:due, manual:true
+      });
+    });
+    await update(ref(db),updates);
+    await logChange('plan',`Manually ran a cycle of "${p.title}"`,clean({planId}));
+    toast('Cycle generated ✓');
+  } catch(err){ console.error(err); toast('Error generating cycle'); }
+};
+window.adminDeletePlan=async function(planId){
+  const p=savingsPlans.find(x=>x.id===planId); if(!p) return;
+  if(!confirm(`Delete "${p.title}" and all its contribution records? This cannot be undone.`)) return;
+  try{
+    await remove(ref(db,`contributions/${planId}`));
+    await remove(ref(db,`savings/${planId}`));
+    toast('Plan deleted');
+  } catch(err){ console.error(err); toast('Error deleting plan'); }
+};
+function renderAdminPlans(){
+  const el=document.getElementById('admin-plan-list'); if(!el) return;
+  if(!savingsPlans.length){ el.innerHTML=`<div class="detail-none" style="padding:.5rem 0">No plans yet.</div>`; return; }
+  el.innerHTML=savingsPlans.map(p=>{
+    const {saved,pending,items}=planStats(p.id);
+    const next=(p.active&&p.frequency!=='once'&&p.nextDue)?` · next ${dateStr(p.nextDue)}`:'';
+    return `<div class="plan-admin-row">
+      <div class="plan-admin-left">
+        <div style="font-size:13px;font-weight:600">${p.emoji||'💰'} ${p.title}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">
+          ${fmt(p.amount)} · ${FREQ_LABEL[p.frequency]||p.frequency}${next}
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:1px">
+          ${(p.members||[]).join(', ')||'no members'} · ${items.length} entries · ${fmt(saved)} in${pending>0?`, ${fmt(pending)} due`:''}
+        </div>
+      </div>
+      <div class="plan-admin-actions">
+        <button class="btn-tiny warn" onclick="adminTogglePlan('${p.id}')">${p.active?'⏸ Pause':'▶ Resume'}</button>
+        <button class="btn-tiny go" onclick="adminRunPlanNow('${p.id}')">⚡ Run now</button>
+        <button class="btn-tiny danger" onclick="adminDeletePlan('${p.id}')">🗑 Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
 
 window.adminAddMember=async function(){
   const input=document.getElementById('new-member-input'); const name=input.value.trim();
@@ -1370,8 +1936,14 @@ window.deleteExpense=async function(expenseId){
 };
 
 // ── Boot ───────────────────────────────────────────────────────
-console.log('%cHouseSplit v2.1 — undefined-safe audit log','color:#3b82f6;font-weight:bold');
+document.getElementById('plan-amount').addEventListener('input',updatePlanPreview);
+document.getElementById('plan-freq').addEventListener('change',updatePlanPreview);
+document.getElementById('plan-title').addEventListener('keydown',e=>{ if(e.key==='Enter') adminCreatePlan(); });
+
+console.log('%cHouseSplit v3.0 — savings plans & recurring transactions','color:#3b82f6;font-weight:bold');
 startListening();
+// re-check for due cycles every 5 minutes while the app stays open
+setInterval(generateDueContributions,5*60*1000);
 setTimeout(()=>{
   hideLoading();
   const savedUser=localStorage.getItem('hs_user');
