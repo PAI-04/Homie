@@ -696,6 +696,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <div id="past-changes-list"><div class="no-changes">No changes recorded yet.</div></div>
       </div>
 
+      <!-- Maintenance / cleanup -->
+      <div class="admin-panel" style="margin-top:1rem">
+        <div class="admin-panel-title">🧹 Maintenance</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:.85rem">
+          If the app is slow to load, run this once on Wi-Fi from a laptop. It compresses every stored
+          receipt and proof image, strips image data out of the undo log, and trims old log entries —
+          shrinking the database dramatically without losing any expense data.
+        </div>
+        <button class="btn-primary" style="width:auto;padding:.55rem 1.1rem;font-size:13px" id="shrink-btn" onclick="adminShrinkDb()">Run cleanup now</button>
+        <div style="font-size:12px;color:var(--text3);margin-top:.6rem;min-height:16px" id="shrink-status"></div>
+      </div>
+
       <!-- Danger zone -->
       <div class="danger-zone">
         <div class="danger-zone-title">⚠️ Danger zone</div>
@@ -758,6 +770,7 @@ const CATS   = ['Electric','Rent','Gas','Water','Internet','Groceries','Trash','
 const COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4','#f97316'];
 const PLAN_EMOJIS = ['💰','🏖️','🏠','🚗','🎉','🛠️','🎓','❤️','🍕','✈️'];
 const FREQ_LABEL = {once:'One-time',daily:'Daily',weekly:'Weekly',biweekly:'Every 2 weeks',monthly:'Monthly'};
+const MAX_LOG_ENTRIES = 60;   // audit log is pruned past this
 
 // Advance a timestamp by one cycle. For monthly, anchorDay is the day-of-month
 // the plan originally started on — so a plan starting Jan 31 lands on Feb 28,
@@ -800,6 +813,35 @@ function avatarHtml(name,size=36,cls='hmember-avatar',fcls='hmember-avatar-fallb
   return `<div class="${fcls}" style="width:${size}px;height:${size}px;background:${col}22;color:${col}">${initials(name)}</div>`;
 }
 
+// ── Image compression ─────────────────────────────────────────
+// Photos straight from a phone camera are 2–4MB; stored as base64 in the
+// database they balloon further and every device downloads all of them on
+// every load. Downscaling to ≤900px JPEG keeps receipts perfectly readable
+// at roughly 1/30th the size.
+function compressDataUrl(dataUrl,maxDim=900,quality=0.6){
+  return new Promise(res=>{
+    const img=new Image();
+    img.onload=()=>{
+      try{
+        const scale=Math.min(1,maxDim/Math.max(img.width,img.height));
+        const w=Math.max(1,Math.round(img.width*scale));
+        const h=Math.max(1,Math.round(img.height*scale));
+        const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        res(cv.toDataURL('image/jpeg',quality));
+      }catch(e){ res(null); }
+    };
+    img.onerror=()=>res(null);
+    img.src=dataUrl;
+  });
+}
+async function compressUpload(file){
+  const raw=await fileToB64(file);
+  if(!file.type.startsWith('image/')) return raw;      // PDFs pass through
+  const c=await compressDataUrl(raw);
+  return (c&&c.length<raw.length)?c:raw;               // keep smaller of the two
+}
+
 // ── Audit log helpers ──────────────────────────────────────────
 // Firebase rejects any object containing `undefined`. This strips them out.
 function clean(obj){
@@ -807,42 +849,50 @@ function clean(obj){
   return JSON.parse(JSON.stringify(obj, (k,v)=> v===undefined ? null : v));
 }
 async function logChange(type, desc, undoData){
-  // type: 'add'|'delete'|'paid'|'settle'
-  // undoData: what to restore when undone
+  // type: 'add'|'delete'|'paid'|'settle'|'contrib'|'plan'
+  // undoData: what to restore when undone — must stay small (ids/names only, never images)
   const entry = clean({ type, desc, ts: Date.now(), time: now(), undoData });
   await push(ref(db,'changes'), entry);
+  // Prune: keep only the newest MAX_LOG_ENTRIES so the log can't grow unbounded
+  try{
+    if(changes.length>MAX_LOG_ENTRIES){
+      for(const c of changes.slice(MAX_LOG_ENTRIES)){   // changes is sorted newest-first
+        await remove(ref(db,'changes/'+c.id));
+      }
+    }
+  }catch(e){ console.warn('Log prune failed:',e); }
 }
 
 // ── File handlers ──────────────────────────────────────────────
 window.handleProofFile=async function(e){
   const f=e.target.files[0]; if(!f) return;
-  if(f.size>4*1024*1024){ toast('File too large — max 4MB'); return; }
-  proofFileB64=await fileToB64(f);
+  if(f.size>10*1024*1024){ toast('File too large — max 10MB'); return; }
+  proofFileB64=await compressUpload(f);
   document.getElementById('proof-preview-img').src=f.type.startsWith('image/')?proofFileB64:'https://cdn-icons-png.flaticon.com/512/337/337946.png';
   document.getElementById('proof-preview-name').textContent=f.name;
-  document.getElementById('proof-preview-size').textContent=fmtSize(f.size);
+  document.getElementById('proof-preview-size').textContent=fmtSize(Math.round(proofFileB64.length*0.75));
   document.getElementById('proof-preview').style.display='flex';
 };
 window.clearProofFile=function(){ proofFileB64=null; document.getElementById('proof-file-input').value=''; document.getElementById('proof-preview').style.display='none'; };
 
 window.handleExpenseFile=async function(e){
   const f=e.target.files[0]; if(!f) return;
-  if(f.size>4*1024*1024){ toast('File too large — max 4MB'); return; }
-  expenseFileB64=await fileToB64(f);
+  if(f.size>10*1024*1024){ toast('File too large — max 10MB'); return; }
+  expenseFileB64=await compressUpload(f);
   document.getElementById('expense-preview-img').src=f.type.startsWith('image/')?expenseFileB64:'https://cdn-icons-png.flaticon.com/512/337/337946.png';
   document.getElementById('expense-preview-name').textContent=f.name;
-  document.getElementById('expense-preview-size').textContent=fmtSize(f.size);
+  document.getElementById('expense-preview-size').textContent=fmtSize(Math.round(expenseFileB64.length*0.75));
   document.getElementById('expense-preview').style.display='flex';
 };
 window.clearExpenseFile=function(){ expenseFileB64=null; document.getElementById('expense-file-input').value=''; document.getElementById('expense-preview').style.display='none'; };
 
 window.handleSettleFile=async function(e){
   const f=e.target.files[0]; if(!f) return;
-  if(f.size>4*1024*1024){ toast('File too large — max 4MB'); return; }
-  settleFileB64=await fileToB64(f);
+  if(f.size>10*1024*1024){ toast('File too large — max 10MB'); return; }
+  settleFileB64=await compressUpload(f);
   document.getElementById('settle-preview-img').src=f.type.startsWith('image/')?settleFileB64:'https://cdn-icons-png.flaticon.com/512/337/337946.png';
   document.getElementById('settle-preview-name').textContent=f.name;
-  document.getElementById('settle-preview-size').textContent=fmtSize(f.size);
+  document.getElementById('settle-preview-size').textContent=fmtSize(Math.round(settleFileB64.length*0.75));
   document.getElementById('settle-preview').style.display='flex';
 };
 window.clearSettleFile=function(){ settleFileB64=null; document.getElementById('settle-file-input').value=''; document.getElementById('settle-preview').style.display='none'; };
@@ -850,16 +900,24 @@ window.openLightbox=function(src){ document.getElementById('lightbox-img').src=s
 window.closeLightbox=function(){ document.getElementById('lightbox').classList.remove('open'); };
 
 // ── Firebase listeners ─────────────────────────────────────────
+let dbErrShown=false;
+function dbError(err){
+  console.error('Firebase read failed:',err);
+  if(dbErrShown) return;
+  dbErrShown=true;
+  hideLoading();
+  toast('Could not load data — check your connection or Firebase quota',6000);
+}
 function startListening(){
-  onValue(ref(db,'members'),snap=>{ members=Object.values(snap.val()||{}); renderLoginGrid(); if(currentUser||isAdmin){renderAll();} if(isAdmin) renderAdminPanel(); });
-  onValue(ref(db,'expenses'),snap=>{ const val=snap.val()||{}; expenses=Object.entries(val).map(([id,e])=>({...e,id})); expenses.sort((a,b)=>b.ts-a.ts); if(currentUser||isAdmin) renderAll(); });
-  onValue(ref(db,'profiles'),snap=>{ profiles=snap.val()||{}; renderLoginGrid(); renderTopAvatar(); if(currentUser||isAdmin) renderAll(); });
+  onValue(ref(db,'members'),snap=>{ members=Object.values(snap.val()||{}); renderLoginGrid(); if(currentUser||isAdmin){renderAll();} if(isAdmin) renderAdminPanel(); },dbError);
+  onValue(ref(db,'expenses'),snap=>{ const val=snap.val()||{}; expenses=Object.entries(val).map(([id,e])=>({...e,id})); expenses.sort((a,b)=>b.ts-a.ts); if(currentUser||isAdmin) renderAll(); },dbError);
+  onValue(ref(db,'profiles'),snap=>{ profiles=snap.val()||{}; renderLoginGrid(); renderTopAvatar(); if(currentUser||isAdmin) renderAll(); },dbError);
   onValue(ref(db,'changes'),snap=>{
     const val=snap.val()||{};
     changes=Object.entries(val).map(([id,c])=>({...c,id}));
     changes.sort((a,b)=>b.ts-a.ts);
     if(isAdmin&&activeTab==='admin') renderAdminPanel();
-  });
+  },dbError);
   onValue(ref(db,'savings'),snap=>{
     const val=snap.val()||{};
     savingsPlans=Object.entries(val).map(([id,p])=>({...p,id}));
@@ -867,7 +925,7 @@ function startListening(){
     generateDueContributions();
     if(currentUser||isAdmin) renderAll();
     if(isAdmin&&activeTab==='admin') renderAdminPanel();
-  });
+  },dbError);
   onValue(ref(db,'contributions'),snap=>{
     const val=snap.val()||{};
     contributions=[]; contribMap={};
@@ -880,7 +938,7 @@ function startListening(){
     });
     contributions.sort((a,b)=>(b.dueTs||0)-(a.dueTs||0));
     if(currentUser||isAdmin) renderAll();
-  });
+  },dbError);
 }
 
 // ── Auto-generate due contributions ────────────────────────────
@@ -1100,11 +1158,11 @@ function buildRelData(me,other){
     if(!myS&&!otherS) return;
     if(e.paidBy===other&&myS){
       const idx=(e.splits||[]).findIndex(s=>s.name===me);
-      if(!myS.paid) iOweItems.push({expenseId:e.id,splitIdx:idx,amount:myS.amount,desc:`${e.category} — ${e.desc}`,date:e.date,isSettledExpense:!!e.isSettledExpense});
+      if(!myS.paid) iOweItems.push({expenseId:e.id,splitIdx:idx,name:me,amount:myS.amount,desc:`${e.category} — ${e.desc}`,date:e.date,isSettledExpense:!!e.isSettledExpense});
       allShared.push({e,dir:'i-owe',amt:myS.amount,paid:myS.paid});
     } else if(e.paidBy===me&&otherS){
       const idx=(e.splits||[]).findIndex(s=>s.name===other);
-      if(!otherS.paid) theyOweItems.push({expenseId:e.id,splitIdx:idx,amount:otherS.amount,desc:`${e.category} — ${e.desc}`,date:e.date,isSettledExpense:!!e.isSettledExpense});
+      if(!otherS.paid) theyOweItems.push({expenseId:e.id,splitIdx:idx,name:other,amount:otherS.amount,desc:`${e.category} — ${e.desc}`,date:e.date,isSettledExpense:!!e.isSettledExpense});
       allShared.push({e,dir:'they-owe',amt:otherS.amount,paid:otherS.paid});
     }
   });
@@ -1165,9 +1223,7 @@ function renderPeople(){
       ${hasAnyUnpaid?`<div class="rel-actions">
         ${isPaySettleOnly
           ? (net>0.005
-              // I owe them — show Pay the settle button (I'm the payer)
               ?`<button class="btn-settle" style="background:var(--success-bg);border-color:var(--success);color:var(--success)" onclick="openSettleModal('${other}')">💸 Pay the settle with ${other}</button>`
-              // They owe me — no button needed, waiting for them to pay
               :`<span style="font-size:12px;color:var(--text3);font-style:italic">Waiting for ${other} to pay the settle</span>`)
           :`<button class="btn-settle" onclick="openSettleModal('${other}')">⇌ Settle up with ${other}</button>`
         }
@@ -1190,7 +1246,6 @@ window.openSettleModal=function(other){
 
   const netAbs=Math.abs(net);
 
-  // Title & subtitle & confirm button change based on mode
   const titleEl=document.querySelector('#settle-modal .modal-title');
   const confirmBtn=document.getElementById('settle-confirm-btn');
   if(isPaySettleOnly){
@@ -1211,21 +1266,18 @@ window.openSettleModal=function(other){
     document.getElementById('settle-modal-sub').textContent=sub;
   }
 
-  // I owe them list
   const iEl=document.getElementById('settle-i-owe-list');
   iEl.innerHTML=iOweItems.length
     ? iOweItems.map(x=>`<div class="settle-item-row"><span>${x.desc} <span style="font-size:11px;color:var(--text3)">(${x.date})</span></span><span style="color:var(--danger);font-weight:600;flex-shrink:0;margin-left:8px">${fmt(x.amount)}</span></div>`).join('')
       +`<div class="settle-subtotal"><span>Subtotal you owe</span><span style="color:var(--danger)">${fmt(iOweTotal)}</span></div>`
     : `<div class="detail-none" style="padding:.3rem 0">Nothing unpaid</div>`;
 
-  // They owe me list
   const tEl=document.getElementById('settle-they-owe-list');
   tEl.innerHTML=theyOweItems.length
     ? theyOweItems.map(x=>`<div class="settle-item-row"><span>${x.desc} <span style="font-size:11px;color:var(--text3)">(${x.date})</span></span><span style="color:var(--success);font-weight:600;flex-shrink:0;margin-left:8px">${fmt(x.amount)}</span></div>`).join('')
       +`<div class="settle-subtotal"><span>Subtotal they owe</span><span style="color:var(--success)">${fmt(theyOweTotal)}</span></div>`
     : `<div class="detail-none" style="padding:.3rem 0">Nothing unpaid</div>`;
 
-  // Net box
   const netBox=document.getElementById('settle-net-box');
   const netLbl=document.getElementById('settle-net-label');
   const netVal=document.getElementById('settle-net-val');
@@ -1241,7 +1293,6 @@ window.openSettleModal=function(other){
     netVal.textContent='$0.00'; netLbl.style.color=''; netVal.style.color='';
   }
 
-  // Info note: only show for regular settle with a remaining difference
   const noteEl=document.getElementById('settle-new-exp-note');
   if(!isPaySettleOnly && netAbs>0.005){
     const debtor=net>0.005?me:other;
@@ -1252,7 +1303,6 @@ window.openSettleModal=function(other){
     noteEl.style.display='none';
   }
 
-  // Proof required only when I owe net
   document.getElementById('settle-proof-section').style.display=net>0.005?'block':'none';
   document.getElementById('settle-modal').classList.add('open');
 };
@@ -1272,15 +1322,11 @@ window.confirmSettle=async function(){
   const netAbs=Math.abs(net);
 
   try{
-    // Snapshot of all affected expenses BEFORE modifying (for undo)
+    // Record which splits get flipped — ids and names only, never full
+    // split snapshots. The old approach copied entire splits (including any
+    // base64 proof images) into the audit log, doubling stored image data.
     const allItems=[...iOweItems,...theyOweItems];
-    const beforeSnapshots={};
-    for(const item of allItems){
-      if(!beforeSnapshots[item.expenseId]){
-        const e=expenses.find(x=>x.id===item.expenseId);
-        if(e) beforeSnapshots[item.expenseId]={id:item.expenseId,splits:e.splits.map(s=>({...s}))};
-      }
-    }
+    const flipped=allItems.map(item=>({expenseId:item.expenseId,name:item.name}));
 
     // Mark all mutual unpaid splits as paid
     const byExpense={};
@@ -1319,12 +1365,12 @@ window.confirmSettle=async function(){
       newExpenseId=pushed.key;
     }
 
-    // Log change for admin undo
+    // Log change for admin undo (lightweight — no image data)
     await logChange('settle',
       settleIsPayOnly
         ?`Pay the settle: ${me} paid ${settleTarget} ${fmt(netAbs)}`
         :`Settle up: ${me} ↔ ${settleTarget}${netAbs>0.005?' — new expense created for '+fmt(netAbs):''}`,
-      { type:'settle', settledExpenses:beforeSnapshots, newExpenseId }
+      { type:'settle', flipped, newExpenseId }
     );
 
     const msg=settleIsPayOnly
@@ -1504,11 +1550,11 @@ window.toggleSavDetail=function(id){ const el=document.getElementById(id); if(el
 // ── Contribution paid modal ────────────────────────────────────
 window.handleContribFile=async function(e){
   const f=e.target.files[0]; if(!f) return;
-  if(f.size>4*1024*1024){ toast('File too large — max 4MB'); return; }
-  contribFileB64=await fileToB64(f);
+  if(f.size>10*1024*1024){ toast('File too large — max 10MB'); return; }
+  contribFileB64=await compressUpload(f);
   document.getElementById('contrib-preview-img').src=f.type.startsWith('image/')?contribFileB64:'https://cdn-icons-png.flaticon.com/512/337/337946.png';
   document.getElementById('contrib-preview-name').textContent=f.name;
-  document.getElementById('contrib-preview-size').textContent=fmtSize(f.size);
+  document.getElementById('contrib-preview-size').textContent=fmtSize(Math.round(contribFileB64.length*0.75));
   document.getElementById('contrib-preview').style.display='flex';
 };
 window.clearContribFile=function(){ contribFileB64=null; document.getElementById('contrib-file-input').value=''; document.getElementById('contrib-preview').style.display='none'; };
@@ -1558,8 +1604,8 @@ function renderProfile(){
 }
 window.handleProfilePhoto=async function(e){
   const f=e.target.files[0]; if(!f) return;
-  if(f.size>4*1024*1024){ toast('Photo too large — max 4MB'); return; }
-  const b64=await fileToB64(f);
+  if(f.size>10*1024*1024){ toast('Photo too large — max 10MB'); return; }
+  const b64=await compressUpload(f);
   await set(ref(db,`profiles/${memberKey(currentUser)}/photo`),b64);
   toast('Profile photo updated ✓');
 };
@@ -1620,6 +1666,17 @@ function renderAdminPanel(){
 }
 
 // ── Undo ───────────────────────────────────────────────────────
+// Helper: mark one member's split unpaid and strip its proof fields
+async function revertSplitUnpaid(expenseId,memberName){
+  const e=expenses.find(x=>x.id===expenseId);
+  if(!e) return false;
+  const updated=e.splits.map(s=>{
+    if(s.name!==memberName) return {...s};
+    const c={...s,paid:false}; delete c.proofNote; delete c.proofImg; return c;
+  });
+  await set(ref(db,`expenses/${expenseId}/splits`),clean(updated));
+  return true;
+}
 window.undoChange=async function(changeId){
   const change=changes.find(c=>c.id===changeId);
   if(!change){ toast('Change not found'); return; }
@@ -1639,8 +1696,14 @@ window.undoChange=async function(changeId){
       toast('Expense restored ✓');
     }
     else if(change.type==='paid'){
-      // undo paid = restore original splits
-      await update(ref(db,`expenses/${u.expenseId}`),{splits:u.originalSplits});
+      // undo paid = flip that member's split back to unpaid
+      if(u.originalSplits){
+        // legacy entries recorded a full splits snapshot
+        await update(ref(db,`expenses/${u.expenseId}`),{splits:u.originalSplits});
+      } else {
+        const ok=await revertSplitUnpaid(u.expenseId,u.member);
+        if(!ok){ toast('Expense no longer exists'); return; }
+      }
       toast('Payment undone ✓');
     }
     else if(change.type==='contrib'){
@@ -1655,9 +1718,16 @@ window.undoChange=async function(changeId){
       return;
     }
     else if(change.type==='settle'){
-      // undo settle = restore all original splits + delete new expense if created
-      for(const [expId,snap] of Object.entries(u.settledExpenses||{})){
-        await update(ref(db,`expenses/${expId}`),{splits:snap.splits});
+      if(u.settledExpenses){
+        // legacy entries recorded full splits snapshots
+        for(const [expId,snap] of Object.entries(u.settledExpenses)){
+          await update(ref(db,`expenses/${expId}`),{splits:snap.splits});
+        }
+      } else {
+        // new entries record only which member+expense splits were flipped
+        for(const f of (u.flipped||[])){
+          await revertSplitUnpaid(f.expenseId,f.name);
+        }
       }
       if(u.newExpenseId) await remove(ref(db,`expenses/${u.newExpenseId}`));
       toast('Settle up reversed ✓');
@@ -1666,6 +1736,96 @@ window.undoChange=async function(changeId){
     // remove the change entry from log
     await remove(ref(db,`changes/${changeId}`));
   } catch(err){ toast('Undo failed — try again'); console.error(err); }
+};
+
+// ── Admin: one-time database cleanup ───────────────────────────
+// Compresses every oversized image already stored, strips image data out of
+// legacy audit-log entries, prunes old log entries, and shrinks profile
+// photos. Safe to run repeatedly; already-small data is left untouched.
+window.adminShrinkDb=async function(){
+  if(!confirm('Compress all stored images and trim the audit log?\n\nRun this once, on Wi-Fi, ideally from a laptop. It may take a few minutes and the page must stay open until it finishes.')) return;
+  const status=document.getElementById('shrink-status');
+  const btn=document.getElementById('shrink-btn');
+  btn.disabled=true;
+  const BIG=150000;               // ~110KB of binary once base64 overhead removed
+  let savedChars=0;
+
+  try{
+    // 1) Compress receipt + proof images on every expense
+    let done=0;
+    for(const e of expenses){
+      const patch={}; let changed=false;
+      if(e.receiptImg&&e.receiptImg.length>BIG&&e.receiptImg.startsWith('data:image')){
+        const c=await compressDataUrl(e.receiptImg);
+        if(c&&c.length<e.receiptImg.length){ savedChars+=e.receiptImg.length-c.length; patch.receiptImg=c; changed=true; }
+      }
+      if(Array.isArray(e.splits)){
+        const ns=e.splits.map(s=>({...s})); let sChanged=false;
+        for(const s of ns){
+          if(s.proofImg&&s.proofImg.length>BIG&&s.proofImg.startsWith('data:image')){
+            const c=await compressDataUrl(s.proofImg);
+            if(c&&c.length<s.proofImg.length){ savedChars+=s.proofImg.length-c.length; s.proofImg=c; sChanged=true; }
+          }
+        }
+        if(sChanged){ patch.splits=clean(ns); changed=true; }
+      }
+      if(changed) await update(ref(db,`expenses/${e.id}`),patch);
+      done++;
+      status.textContent=`Compressing expense images… ${done}/${expenses.length}`;
+    }
+
+    // 2) Compress contribution proof images
+    for(const c of contributions){
+      if(c.proofImg&&c.proofImg.length>BIG&&c.proofImg.startsWith('data:image')){
+        const small=await compressDataUrl(c.proofImg);
+        if(small&&small.length<c.proofImg.length){
+          savedChars+=c.proofImg.length-small.length;
+          await update(ref(db,`contributions/${c.planId}/${c.id}`),{proofImg:small});
+        }
+      }
+    }
+
+    // 3) Compress profile photos
+    status.textContent='Compressing profile photos…';
+    for(const [k,p] of Object.entries(profiles)){
+      if(p&&p.photo&&p.photo.length>BIG&&p.photo.startsWith('data:image')){
+        const small=await compressDataUrl(p.photo,400,0.65);   // avatars can be tiny
+        if(small&&small.length<p.photo.length){
+          savedChars+=p.photo.length-small.length;
+          await set(ref(db,`profiles/${k}/photo`),small);
+        }
+      }
+    }
+
+    // 4) Prune the audit log to the newest MAX_LOG_ENTRIES and strip any
+    //    image data lodged inside legacy undo snapshots
+    status.textContent='Cleaning the audit log…';
+    let pruned=0;
+    for(const c of changes.slice(MAX_LOG_ENTRIES)){
+      await remove(ref(db,'changes/'+c.id)); pruned++;
+    }
+    for(const c of changes.slice(0,MAX_LOG_ENTRIES)){
+      const u=c.undoData; if(!u) continue;
+      let dirty=false;
+      const stripSplit=s=>{ if(s&&s.proofImg){ delete s.proofImg; dirty=true; } };
+      if(u.settledExpenses) Object.values(u.settledExpenses).forEach(snap=>(snap.splits||[]).forEach(stripSplit));
+      if(u.originalSplits) u.originalSplits.forEach(stripSplit);
+      if(u.expenseData){
+        if(u.expenseData.receiptImg){ delete u.expenseData.receiptImg; dirty=true; }
+        (u.expenseData.splits||[]).forEach(stripSplit);
+      }
+      if(dirty) await set(ref(db,'changes/'+c.id+'/undoData'),clean(u));
+    }
+
+    const freedMB=(savedChars*0.75/1048576).toFixed(1);
+    status.textContent=`Done ✓ — freed ~${freedMB} MB from images, removed ${pruned} old log entries. Reload the app on all devices.`;
+    toast('Cleanup finished ✓',4500);
+  } catch(err){
+    console.error('Cleanup error:',err);
+    status.textContent='Cleanup hit an error — check the console. Safe to run again; finished items are skipped.';
+    toast('Cleanup error — see status',4000);
+  }
+  btn.disabled=false;
 };
 
 // ── Admin: savings plans ───────────────────────────────────────
@@ -1887,7 +2047,6 @@ window.confirmMarkPaid=async function(){
   const expense=expenses.find(e=>e.id===modalExpenseId); if(!expense) return;
   const idx=expense.splits.findIndex(s=>s.name===modalMemberName); if(idx===-1) return;
   const btn=document.getElementById('modal-confirm-btn'); btn.disabled=true; btn.textContent='Saving…';
-  const originalSplits=expense.splits.map(s=>({...s}));
   const updated=expense.splits.map(s=>({...s}));
   updated[idx].paid=true;
   const note=document.getElementById('modal-note').value.trim();
@@ -1895,8 +2054,10 @@ window.confirmMarkPaid=async function(){
   if(proofFileB64) updated[idx].proofImg=proofFileB64;
   try{
     await update(ref(db,`expenses/${modalExpenseId}`),{splits:updated});
+    // Undo data holds only the ids — never a splits snapshot, which would
+    // copy every proof image into the audit log a second time.
     await logChange('paid',`${modalMemberName} marked paid on: ${expense.desc} — ${fmt(updated[idx].amount)}`,
-      {expenseId:modalExpenseId,originalSplits});
+      {expenseId:modalExpenseId,member:modalMemberName});
     toast(`${modalMemberName} marked as paid ✓`); closeModal();
   } catch(err){ toast('Error updating'); }
   btn.disabled=false; btn.textContent='Confirm paid';
@@ -1907,7 +2068,7 @@ window.deleteExpense=async function(expenseId){
   if(!confirm('Delete this expense?')) return;
   const expense=expenses.find(e=>e.id===expenseId);
   if(!expense){ toast('Expense not found'); return; }
-  
+
   try{
     // Copy the expense, drop the local-only `id`, and strip any undefined
     // fields (Firebase rejects writes containing undefined).
@@ -1940,7 +2101,7 @@ document.getElementById('plan-amount').addEventListener('input',updatePlanPrevie
 document.getElementById('plan-freq').addEventListener('change',updatePlanPreview);
 document.getElementById('plan-title').addEventListener('keydown',e=>{ if(e.key==='Enter') adminCreatePlan(); });
 
-console.log('%cHouseSplit v3.0 — savings plans & recurring transactions','color:#3b82f6;font-weight:bold');
+console.log('%cHouseSplit v3.1 — compressed images, capped audit log, error reporting','color:#3b82f6;font-weight:bold');
 startListening();
 // re-check for due cycles every 5 minutes while the app stays open
 setInterval(generateDueContributions,5*60*1000);
