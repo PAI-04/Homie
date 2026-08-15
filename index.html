@@ -350,6 +350,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .btn-tiny.go:hover{background:var(--success-bg);color:var(--success);border-color:var(--success);}
 .plan-hint{font-size:11px;color:var(--text3);margin-top:.5rem;line-height:1.45;}
 
+/* COLLECTOR */
+.collector-panel{background:var(--surface);border:0.5px solid var(--accent);border-radius:var(--radius-lg);padding:1.1rem 1.2rem;margin-bottom:1rem;}
+.collector-panel-title{font-size:13px;font-weight:600;color:var(--accent-text);margin-bottom:.2rem;display:flex;align-items:center;gap:.4rem;}
+.collector-panel-sub{font-size:12px;color:var(--text3);margin-bottom:.85rem;}
+.collector-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.85rem;}
+.collector-owed-row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.5rem 0;border-bottom:0.5px solid var(--border);}
+.collector-owed-row:last-child{border-bottom:none;}
+.collector-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--accent-bg);color:var(--accent-text);border:0.5px solid var(--accent);margin-top:5px;}
+.collector-badge img{width:16px;height:16px;border-radius:50%;object-fit:cover;}
+.collector-badge .mini-fb{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;}
+.you-collect{background:var(--success-bg);color:var(--success);border-color:var(--success);}
+.card-manage-row{display:flex;gap:.35rem;justify-content:flex-end;margin-top:.7rem;padding-top:.7rem;border-top:0.5px solid var(--border);flex-wrap:wrap;}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:.7rem;}
+.search-input{width:100%;padding:.6rem 2.2rem .6rem 2.2rem;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--surface);color:var(--text);font-size:14px;outline:none;transition:border-color .15s;font-family:inherit;}
+.search-input:focus{border-color:var(--accent);}
+.search-input::placeholder{color:var(--text3);}
+.search-icon{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text3);pointer-events:none;}
+.search-clear{position:absolute;right:.55rem;top:50%;transform:translateY(-50%);font-size:15px;color:var(--text3);cursor:pointer;background:none;border:none;padding:2px 5px;line-height:1;display:none;}
+.search-clear:hover{color:var(--danger);}
+.search-clear.show{display:block;}
+.filter-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.85rem;}
+.filter-chip{padding:4px 11px;font-size:12px;border-radius:20px;border:0.5px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.filter-chip:hover{background:var(--surface2);}
+.filter-chip.active{background:var(--accent-bg);color:var(--accent-text);border-color:var(--accent);font-weight:600;}
+.search-summary{font-size:12px;color:var(--text3);margin-bottom:.6rem;}
+.search-summary strong{color:var(--text2);}
+.hl{background:var(--warn-bg);color:var(--warn);border-radius:3px;padding:0 2px;font-weight:600;}
+
 /* MISC */
 .empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:14px;}
 .empty-icon{font-size:2rem;margin-bottom:.5rem;}
@@ -383,7 +413,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <input type="file" id="proof-file-input" accept="image/*,.pdf" onchange="handleProofFile(event)"/>
       <div class="upload-zone-icon">📎</div>
       <div class="upload-zone-text">Tap to upload receipt or screenshot</div>
-      <div class="upload-zone-sub">Max 4MB</div>
+      <div class="upload-zone-sub">Max 10MB — auto-compressed</div>
     </div>
     <div class="upload-preview" id="proof-preview" style="display:none">
       <img id="proof-preview-img" src="" alt=""/>
@@ -412,7 +442,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <input type="file" id="contrib-file-input" accept="image/*,.pdf" onchange="handleContribFile(event)"/>
       <div class="upload-zone-icon">📎</div>
       <div class="upload-zone-text">Tap to upload receipt or screenshot</div>
-      <div class="upload-zone-sub">Max 4MB</div>
+      <div class="upload-zone-sub">Max 10MB — auto-compressed</div>
     </div>
     <div class="upload-preview" id="contrib-preview" style="display:none">
       <img id="contrib-preview-img" src="" alt=""/>
@@ -456,7 +486,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <input type="file" id="settle-file-input" accept="image/*,.pdf" onchange="handleSettleFile(event)"/>
         <div class="upload-zone-icon">📎</div>
         <div class="upload-zone-text">Receipt, transfer screenshot, or photo</div>
-        <div class="upload-zone-sub">Max 4MB</div>
+        <div class="upload-zone-sub">Max 10MB — auto-compressed</div>
       </div>
       <div class="upload-preview" id="settle-preview" style="display:none">
         <img id="settle-preview-img" src="" alt=""/>
@@ -520,7 +550,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
     <div id="tab-dashboard">
       <div class="metric-grid" id="metric-grid"></div>
-      <div class="section-header">
+
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" type="text" id="search-input" placeholder="Search expenses — name, category, person, amount…" autocomplete="off"/>
+        <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+      </div>
+      <div class="filter-chips" id="filter-chips"></div>
+      <div class="search-summary" id="search-summary" style="display:none"></div>
+
+      <div class="section-header" style="margin-top:0">
         <div class="section-title">All expenses</div>
         <span style="font-size:12px;color:var(--text3)" id="expense-count"></span>
       </div>
@@ -544,7 +583,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
             <input type="file" id="expense-file-input" accept="image/*,.pdf" onchange="handleExpenseFile(event)"/>
             <div class="upload-zone-icon">🧾</div>
             <div class="upload-zone-text">Tap to attach photo or receipt</div>
-            <div class="upload-zone-sub">Max 4MB</div>
+            <div class="upload-zone-sub">Max 10MB — auto-compressed</div>
           </div>
           <div class="upload-preview" id="expense-preview" style="display:none">
             <img id="expense-preview-img" src="" alt=""/>
@@ -570,6 +609,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       </div>
       <div class="section-title" style="margin-bottom:.75rem">Your expense history</div>
       <div id="my-history-list"></div>
+
+      <div class="section-header">
+        <div class="section-title">🙋 Expenses you added</div>
+        <span style="font-size:12px;color:var(--text3)" id="my-added-count"></span>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:.7rem">
+        Everything you entered into the app, including bills you paid for others.
+      </div>
+      <div class="metric-grid" id="my-added-metrics"></div>
+      <div id="my-added-list"></div>
     </div>
 
     <div id="tab-people" style="display:none">
@@ -583,6 +632,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     </div>
 
     <div id="tab-savings" style="display:none">
+      <div id="collector-panel" style="display:none"></div>
       <div class="sav-hero">
         <div class="sav-hero-label">Total saved by the house</div>
         <div class="sav-hero-val" id="sav-total">$0.00</div>
@@ -659,6 +709,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
           <div class="plan-form-row">
             <label>Goal target (optional)</label>
             <input type="number" id="plan-goal" placeholder="e.g. 2000" min="0" step="0.01"/>
+          </div>
+        </div>
+
+        <div class="plan-form-row">
+          <label>Money is collected by</label>
+          <select id="plan-collector"></select>
+          <div class="plan-hint" style="margin-top:.4rem">
+            This member holds the pot and confirms payments for this plan. They get manager rights over it — everyone else just sees where to send their money.
           </div>
         </div>
 
@@ -964,6 +1022,7 @@ async function generateDueContributions(){
           if(contribMap[plan.id+'/'+key]) return;   // already exists, never overwrite
           updates['contributions/'+plan.id+'/'+key]=clean({
             planId:plan.id, planTitle:plan.title, planEmoji:plan.emoji||'💰',
+            collector:plan.collector||null,
             member:name, amount:plan.amount, paid:false,
             dueTs:due, dueDate:ds, createdTs:Date.now()
           });
@@ -1066,6 +1125,69 @@ function renderAll(){
   if(activeTab==='savings') renderSavings();
 }
 
+// ── Search & filters ───────────────────────────────────────────
+let searchQ='', activeFilter='all';
+
+function escRx(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+// Highlight matched text — input is escaped first, so this is safe to inject
+function hl(text){
+  const t=esc(text);
+  if(!searchQ) return t;
+  try{ return t.replace(new RegExp('('+escRx(esc(searchQ))+')','ig'),'<span class="hl">$1</span>'); }
+  catch(e){ return t; }
+}
+
+// An expense matches if the query appears in its description, category, payer,
+// creator, date, any participant's name, the total, or any split amount.
+function matchesSearch(e){
+  if(!searchQ) return true;
+  const q=searchQ.toLowerCase();
+  const hay=[
+    e.desc, e.category, e.paidBy, e.addedBy, e.date,
+    String(e.total), Number(e.total).toFixed(2),
+    ...(e.splits||[]).map(s=>s.name),
+    ...(e.splits||[]).map(s=>Number(s.amount).toFixed(2)),
+    ...(e.splits||[]).map(s=>s.proofNote||'')
+  ].join(' ').toLowerCase();
+  return hay.includes(q);
+}
+
+function matchesFilter(e){
+  const me=currentUser;
+  const mine=isAdmin?'Admin':me;
+  switch(activeFilter){
+    case 'added':   return (e.addedBy||e.paidBy)===mine;
+    case 'in':      return (e.splits||[]).some(s=>s.name===me);
+    case 'unpaid':  return (e.splits||[]).some(s=>!s.paid);
+    case 'iowe':    return (e.splits||[]).some(s=>s.name===me&&!s.paid);
+    default:        return true;
+  }
+}
+
+function visibleExpenses(){ return expenses.filter(e=>matchesSearch(e)&&matchesFilter(e)); }
+
+window.clearSearch=function(){
+  searchQ='';
+  const el=document.getElementById('search-input');
+  el.value=''; el.focus();
+  document.getElementById('search-clear').classList.remove('show');
+  renderDashboard();
+};
+window.setFilter=function(f){ activeFilter=f; renderDashboard(); };
+
+function renderFilterChips(){
+  const me=isAdmin?'Admin':currentUser;
+  const chips=[
+    ['all','All'],
+    ['added','🙋 Added by me'],
+    ...(isAdmin?[]:[['in','👤 I\'m in'],['iowe','⚠️ I still owe']]),
+    ['unpaid','🔴 Has unpaid']
+  ];
+  document.getElementById('filter-chips').innerHTML=chips.map(([k,label])=>
+    `<button class="filter-chip ${activeFilter===k?'active':''}" onclick="setFilter('${k}')">${label}</button>`).join('');
+}
+
 // ── Dashboard ──────────────────────────────────────────────────
 function renderDashboard(){
   const me=currentUser; let myOwed=0,myPaid=0,houseTotal=0;
@@ -1078,11 +1200,42 @@ function renderDashboard(){
       <div class="metric"><div class="metric-label">You've paid</div><div class="metric-val success">${fmt(myPaid)}</div></div>
       <div class="metric"><div class="metric-label">House total</div><div class="metric-val accent">${fmt(houseTotal)}</div></div>
       <div class="metric"><div class="metric-label">Expenses</div><div class="metric-val">${expenses.length}</div></div>`;
-  document.getElementById('expense-count').textContent=expenses.length+' total';
+
+  renderFilterChips();
+
+  const shown=visibleExpenses();
+  const filtering=searchQ||activeFilter!=='all';
+  document.getElementById('expense-count').textContent=
+    filtering?`${shown.length} of ${expenses.length}`:`${expenses.length} total`;
+
+  // Summary line: how many matched and what they add up to
+  const sumEl=document.getElementById('search-summary');
+  if(filtering){
+    const total=shown.reduce((a,e)=>a+(e.total||0),0);
+    const myShare=shown.reduce((a,e)=>{
+      const s=(e.splits||[]).find(s=>s.name===me); return a+(s?s.amount:0);
+    },0);
+    sumEl.style.display='block';
+    sumEl.innerHTML=`Found <strong>${shown.length}</strong> expense${shown.length!==1?'s':''} · total <strong>${fmt(total)}</strong>`
+      +(isAdmin?'':` · your share <strong>${fmt(myShare)}</strong>`);
+  } else sumEl.style.display='none';
+
   const list=document.getElementById('all-expenses-list');
   if(!expenses.length){ list.innerHTML=`<div class="empty"><div class="empty-icon">🧾</div>No expenses yet.</div>`; return; }
-  list.innerHTML=expenses.map(e=>renderExpenseCard(e)).join('');
+  if(!shown.length){
+    list.innerHTML=`<div class="empty"><div class="empty-icon">🔍</div>Nothing matches${searchQ?` “${esc(searchQ)}”`:''}.<br/>
+      <span style="font-size:13px">Try a different word, or <span style="color:var(--accent);cursor:pointer" onclick="resetSearchAll()">clear the filters</span>.</span></div>`;
+    return;
+  }
+  list.innerHTML=shown.map(e=>renderExpenseCard(e)).join('');
 }
+window.resetSearchAll=function(){
+  searchQ=''; activeFilter='all';
+  const el=document.getElementById('search-input');
+  if(el) el.value='';
+  document.getElementById('search-clear').classList.remove('show');
+  renderDashboard();
+};
 
 function renderExpenseCard(e){
   const me=currentUser;
@@ -1093,7 +1246,7 @@ function renderExpenseCard(e){
     const proofEl=s.proofImg?`<img class="proof-mini" src="${s.proofImg}" onclick="openLightbox('${s.proofImg}')" title="View proof"/>`:
                   (s.proofNote&&s.paid?`<span title="${s.proofNote}" style="cursor:help;font-size:12px">📝</span>`:'');
     return `<div class="split-row">
-      <span class="split-name" style="${isMe?'font-weight:500;color:var(--text)':''}">${s.name}${isMe?' (you)':''}</span>
+      <span class="split-name" style="${isMe?'font-weight:500;color:var(--text)':''}">${hl(s.name)}${isMe?' (you)':''}</span>
       <div class="split-right">
         <span>${fmt(s.amount)}</span>
         <span class="badge ${s.paid?'badge-paid':'badge-owed'}">${s.paid?'paid':'owes'}</span>
@@ -1107,9 +1260,9 @@ function renderExpenseCard(e){
   return `<div class="expense-card${isSettled?' settled-expense':''}">
     <div class="expense-top">
       <div>
-        <div class="expense-cat-badge${isSettled?' settled-badge':''}">${isSettled?'⇌ Settled':e.category}</div>
-        <div class="expense-desc">${e.desc}</div>
-        <div class="expense-meta">Paid by ${e.paidBy} · ${e.date}</div>
+        <div class="expense-cat-badge${isSettled?' settled-badge':''}">${isSettled?'⇌ Settled':hl(e.category)}</div>
+        <div class="expense-desc">${hl(e.desc)}</div>
+        <div class="expense-meta">Paid by ${hl(e.paidBy)} · ${e.date}${e.addedBy&&e.addedBy!==e.paidBy&&e.addedBy!=='settle'?` · added by ${hl(e.addedBy)}`:''}</div>
       </div>
       <div style="text-align:right">
         <div class="expense-amount">${fmt(e.total)}</div>
@@ -1144,6 +1297,59 @@ function renderMine(){
         <span class="badge ${s.paid?'badge-paid':'badge-owed'}">${s.paid?'paid':'owes'}</span>
         ${proofEl}
         ${!s.paid?`<button class="btn-mark" onclick="openPaidModal('${e.id}','${me}','${fmt(s.amount)}')">Mark paid</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  renderMyAdded();
+}
+
+// Everything the current user entered into the app themselves
+function renderMyAdded(){
+  const me=currentUser;
+  const mine=expenses.filter(e=>(e.addedBy||e.paidBy)===me);
+  document.getElementById('my-added-count').textContent=
+    mine.length+' expense'+(mine.length!==1?'s':'');
+
+  const total=mine.reduce((a,e)=>a+(e.total||0),0);
+  // How much of what you added is still outstanding from other people
+  const owedToMe=mine.reduce((a,e)=>
+    a+(e.splits||[]).filter(s=>s.name!==me&&!s.paid).reduce((b,s)=>b+s.amount,0),0);
+
+  document.getElementById('my-added-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">Total you entered</div><div class="metric-val accent">${fmt(total)}</div></div>
+    <div class="metric"><div class="metric-label">Owed back to you</div><div class="metric-val ${owedToMe>0?'danger':'success'}">${fmt(owedToMe)}</div></div>
+    <div class="metric"><div class="metric-label">Count</div><div class="metric-val">${mine.length}</div></div>`;
+
+  const list=document.getElementById('my-added-list');
+  if(!mine.length){
+    list.innerHTML=`<div class="empty" style="padding:2rem 1rem"><div class="empty-icon">📝</div>You haven't added any expenses yet.</div>`;
+    return;
+  }
+  list.innerHTML=mine.map(e=>{
+    const unpaid=(e.splits||[]).filter(s=>!s.paid);
+    const outstanding=unpaid.filter(s=>s.name!==me).reduce((a,s)=>a+s.amount,0);
+    return `<div class="expense-card">
+      <div class="expense-top">
+        <div>
+          <div class="expense-cat-badge${e.isSettledExpense?' settled-badge':''}">${e.isSettledExpense?'⇌ Settled':esc(e.category)}</div>
+          <div class="expense-desc">${esc(e.desc)}</div>
+          <div class="expense-meta">${e.date} · paid by ${esc(e.paidBy)} · split ${(e.splits||[]).length} way${(e.splits||[]).length!==1?'s':''}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="expense-amount">${fmt(e.total)}</div>
+          <button class="btn-delete" onclick="deleteExpense('${e.id}')" style="margin-top:4px">Delete</button>
+        </div>
+      </div>
+      <div class="splits-list">
+        <div class="split-row">
+          <span class="split-name">${unpaid.length?`${unpaid.length} still unpaid`:'Everyone has paid'}</span>
+          <div class="split-right">
+            ${outstanding>0
+              ?`<span style="color:var(--warn);font-weight:600">${fmt(outstanding)} owed to you</span>`
+              :`<span class="badge badge-paid">settled</span>`}
+          </div>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -1223,7 +1429,9 @@ function renderPeople(){
       ${hasAnyUnpaid?`<div class="rel-actions">
         ${isPaySettleOnly
           ? (net>0.005
+              // I owe them — show Pay the settle button (I'm the payer)
               ?`<button class="btn-settle" style="background:var(--success-bg);border-color:var(--success);color:var(--success)" onclick="openSettleModal('${other}')">💸 Pay the settle with ${other}</button>`
+              // They owe me — no button needed, waiting for them to pay
               :`<span style="font-size:12px;color:var(--text3);font-style:italic">Waiting for ${other} to pay the settle</span>`)
           :`<button class="btn-settle" onclick="openSettleModal('${other}')">⇌ Settle up with ${other}</button>`
         }
@@ -1246,6 +1454,7 @@ window.openSettleModal=function(other){
 
   const netAbs=Math.abs(net);
 
+  // Title & subtitle & confirm button change based on mode
   const titleEl=document.querySelector('#settle-modal .modal-title');
   const confirmBtn=document.getElementById('settle-confirm-btn');
   if(isPaySettleOnly){
@@ -1266,18 +1475,21 @@ window.openSettleModal=function(other){
     document.getElementById('settle-modal-sub').textContent=sub;
   }
 
+  // I owe them list
   const iEl=document.getElementById('settle-i-owe-list');
   iEl.innerHTML=iOweItems.length
     ? iOweItems.map(x=>`<div class="settle-item-row"><span>${x.desc} <span style="font-size:11px;color:var(--text3)">(${x.date})</span></span><span style="color:var(--danger);font-weight:600;flex-shrink:0;margin-left:8px">${fmt(x.amount)}</span></div>`).join('')
       +`<div class="settle-subtotal"><span>Subtotal you owe</span><span style="color:var(--danger)">${fmt(iOweTotal)}</span></div>`
     : `<div class="detail-none" style="padding:.3rem 0">Nothing unpaid</div>`;
 
+  // They owe me list
   const tEl=document.getElementById('settle-they-owe-list');
   tEl.innerHTML=theyOweItems.length
     ? theyOweItems.map(x=>`<div class="settle-item-row"><span>${x.desc} <span style="font-size:11px;color:var(--text3)">(${x.date})</span></span><span style="color:var(--success);font-weight:600;flex-shrink:0;margin-left:8px">${fmt(x.amount)}</span></div>`).join('')
       +`<div class="settle-subtotal"><span>Subtotal they owe</span><span style="color:var(--success)">${fmt(theyOweTotal)}</span></div>`
     : `<div class="detail-none" style="padding:.3rem 0">Nothing unpaid</div>`;
 
+  // Net box
   const netBox=document.getElementById('settle-net-box');
   const netLbl=document.getElementById('settle-net-label');
   const netVal=document.getElementById('settle-net-val');
@@ -1293,6 +1505,7 @@ window.openSettleModal=function(other){
     netVal.textContent='$0.00'; netLbl.style.color=''; netVal.style.color='';
   }
 
+  // Info note: only show for regular settle with a remaining difference
   const noteEl=document.getElementById('settle-new-exp-note');
   if(!isPaySettleOnly && netAbs>0.005){
     const debtor=net>0.005?me:other;
@@ -1303,6 +1516,7 @@ window.openSettleModal=function(other){
     noteEl.style.display='none';
   }
 
+  // Proof required only when I owe net
   document.getElementById('settle-proof-section').style.display=net>0.005?'block':'none';
   document.getElementById('settle-modal').classList.add('open');
 };
@@ -1322,9 +1536,9 @@ window.confirmSettle=async function(){
   const netAbs=Math.abs(net);
 
   try{
-    // Record which splits get flipped — ids and names only, never full
-    // split snapshots. The old approach copied entire splits (including any
-    // base64 proof images) into the audit log, doubling stored image data.
+    // Record which splits get flipped — ids and names only, never full split
+    // snapshots. The old approach copied entire splits (including any base64
+    // proof images) into the audit log, doubling stored image data.
     const allItems=[...iOweItems,...theyOweItems];
     const flipped=allItems.map(item=>({expenseId:item.expenseId,name:item.name}));
 
@@ -1365,7 +1579,7 @@ window.confirmSettle=async function(){
       newExpenseId=pushed.key;
     }
 
-    // Log change for admin undo (lightweight — no image data)
+    // Log change for admin undo
     await logChange('settle',
       settleIsPayOnly
         ?`Pay the settle: ${me} paid ${settleTarget} ${fmt(netAbs)}`
@@ -1435,6 +1649,21 @@ function renderHouse(){
 window.toggleDetail=function(id){ const el=document.getElementById(id); if(el) el.classList.toggle('open'); };
 
 // ── Savings dashboard (visible to everyone) ────────────────────
+// A plan's "collector" is the member who physically holds the pot. They get
+// manager rights over that one plan: confirm anyone's payment, run a cycle,
+// pause it. The main admin can do all of that on every plan.
+function isCollector(plan){ return !isAdmin && !!currentUser && plan.collector===currentUser; }
+function canManagePlan(plan){ return isAdmin || isCollector(plan); }
+
+function collectorBadge(plan){
+  if(!plan.collector) return '';
+  const mine=isCollector(plan);
+  const photo=getPhoto(plan.collector); const col=colorFor(plan.collector);
+  const av=photo?`<img src="${photo}" alt=""/>`
+                :`<span class="mini-fb" style="background:${col}33;color:${col}">${initials(plan.collector)}</span>`;
+  return `<div class="collector-badge${mine?' you-collect':''}">${av}${mine?'You collect this':'Collected by '+plan.collector}</div>`;
+}
+
 function planStats(planId){
   const items=contributions.filter(c=>c.planId===planId);
   let saved=0,pending=0;
@@ -1448,8 +1677,49 @@ function planStats(planId){
   return {items,saved,pending,byMember};
 }
 
+function renderCollectorPanel(){
+  const el=document.getElementById('collector-panel');
+  if(!el) return;
+  const mine=savingsPlans.filter(p=>isCollector(p));
+  if(!mine.length){ el.style.display='none'; el.innerHTML=''; return; }
+
+  let held=0,owedToMe=0;
+  const owedBy={};
+  mine.forEach(p=>{
+    const {saved,pending,byMember}=planStats(p.id);
+    held+=saved; owedToMe+=pending;
+    Object.entries(byMember).forEach(([name,m])=>{
+      if(m.pending>0.005){
+        if(!owedBy[name]) owedBy[name]=0;
+        owedBy[name]+=m.pending;
+      }
+    });
+  });
+
+  const owedRows=Object.entries(owedBy).sort((a,b)=>b[1]-a[1]).map(([name,amt])=>`
+    <div class="collector-owed-row">
+      <div class="sav-member-left">${avatarHtml(name,26)}<span class="sav-member-name">${name}</span></div>
+      <span style="color:var(--warn);font-weight:700;font-size:13px">${fmt(amt)}</span>
+    </div>`).join('') || `<div class="detail-none" style="padding:.4rem 0">Everyone is paid up 🎉</div>`;
+
+  el.style.display='block';
+  el.className='collector-panel';
+  el.innerHTML=`
+    <div class="collector-panel-title">🏦 You're the collector</div>
+    <div class="collector-panel-sub">
+      You hold the pot for ${mine.length} plan${mine.length!==1?'s':''}: ${mine.map(p=>(p.emoji||'💰')+' '+p.title).join(', ')}
+    </div>
+    <div class="collector-stats">
+      <div class="sav-stat"><div class="sav-stat-val" style="color:var(--success)">${fmt(held)}</div><div class="sav-stat-label">You're holding</div></div>
+      <div class="sav-stat"><div class="sav-stat-val" style="color:${owedToMe>0?'var(--warn)':'var(--text3)'}">${fmt(owedToMe)}</div><div class="sav-stat-label">Still owed to you</div></div>
+    </div>
+    <div class="sav-sub-label">Who still owes you</div>
+    ${owedRows}`;
+}
+
 function renderSavings(){
   const list=document.getElementById('savings-list');
+  renderCollectorPanel();
   let grandSaved=0,grandPending=0;
   savingsPlans.forEach(p=>{ const s=planStats(p.id); grandSaved+=s.saved; grandPending+=s.pending; });
   document.getElementById('sav-total').textContent=fmt(grandSaved);
@@ -1469,6 +1739,7 @@ function renderSavings(){
     const pct=goal>0?Math.min(100,(saved/goal)*100):0;
     const nowTs=Date.now();
     const did='sav-'+p.id.replace(/[^a-zA-Z0-9]/g,'');
+    const manages=canManagePlan(p);
 
     const statusChip=p.frequency==='once'
       ?`<span class="sav-chip once">One-time</span>`
@@ -1484,7 +1755,7 @@ function renderSavings(){
       <div class="sav-member-row">
         <div class="sav-member-left">
           ${avatarHtml(name,28)}
-          <span class="sav-member-name">${name}${(!isAdmin&&name===currentUser)?' (you)':''}</span>
+          <span class="sav-member-name">${name}${(!isAdmin&&name===currentUser)?' (you)':''}${name===p.collector?' 🏦':''}</span>
         </div>
         <div class="sav-member-right">
           <span style="color:var(--success);font-weight:600">${fmt(m.paid)}</span>
@@ -1493,7 +1764,8 @@ function renderSavings(){
       </div>`).join('') || `<div class="detail-none">No contributions generated yet.</div>`;
 
     const contribRows=items.slice().sort((a,b)=>b.dueTs-a.dueTs).slice(0,40).map(c=>{
-      const canMark=!c.paid&&(isAdmin||c.member===currentUser);
+      // members confirm their own; the collector and main admin confirm anyone's
+      const canMark=!c.paid&&(isAdmin||c.member===currentUser||p.collector===currentUser);
       const overdue=!c.paid&&c.dueTs<nowTs;
       const proofEl=c.proofImg?`<img class="proof-mini" src="${c.proofImg}" onclick="openLightbox('${c.proofImg}')" title="View proof"/>`:
                     (c.proofNote&&c.paid?`<span title="${c.proofNote}" style="cursor:help;font-size:12px">📝</span>`:'');
@@ -1514,6 +1786,13 @@ function renderSavings(){
     const nextLine=(p.active&&p.frequency!=='once'&&p.nextDue)
       ?` · next ${dateStr(p.nextDue)}`:'';
 
+    // Collectors get inline controls; the main admin manages from the Admin tab
+    const manageRow=isCollector(p)?`
+      <div class="card-manage-row">
+        <button class="btn-tiny warn" onclick="adminTogglePlan('${p.id}')">${p.active?'⏸ Pause':'▶ Resume'}</button>
+        <button class="btn-tiny go" onclick="adminRunPlanNow('${p.id}')">⚡ Run cycle now</button>
+      </div>`:'';
+
     return `<div class="sav-card${p.active?'':' paused'}">
       <div class="sav-top">
         <div class="sav-left">
@@ -1522,6 +1801,7 @@ function renderSavings(){
             <div class="sav-title">${p.title}</div>
             <div class="sav-meta">${statusChip}${fmt(p.amount)} · ${FREQ_LABEL[p.frequency]||p.frequency}${nextLine}</div>
             <div class="sav-meta">${(p.members||[]).length} member${(p.members||[]).length!==1?'s':''}: ${(p.members||[]).join(', ')}</div>
+            ${collectorBadge(p)}
           </div>
         </div>
         <div class="sav-right">
@@ -1535,6 +1815,7 @@ function renderSavings(){
         <div class="sav-stat"><div class="sav-stat-val" style="color:${pending>0?'var(--warn)':'var(--text3)'}">${fmt(pending)}</div><div class="sav-stat-label">Pending</div></div>
         <div class="sav-stat"><div class="sav-stat-val">${items.length}</div><div class="sav-stat-label">Entries</div></div>
       </div>
+      ${manageRow}
       <div class="sav-expand" onclick="toggleSavDetail('${did}')">▾ breakdown &amp; history</div>
       <div class="sav-detail" id="${did}">
         <div class="sav-sub-label">Per member</div>
@@ -1561,8 +1842,11 @@ window.clearContribFile=function(){ contribFileB64=null; document.getElementById
 window.openContribModal=function(planId,contribId){
   const c=contribMap[planId+'/'+contribId]; if(!c){ toast('Entry not found'); return; }
   contribTarget={planId,contribId,member:c.member,amount:c.amount};
+  const plan=savingsPlans.find(p=>p.id===planId);
+  const collector=c.collector||(plan&&plan.collector)||null;
+  const dest=collector&&collector!==c.member ? ` — paid to ${collector}` : '';
   document.getElementById('contrib-modal-sub').textContent=
-    `${c.member} — ${fmt(c.amount)} toward "${c.planTitle||'savings'}" (due ${c.dueDate})`;
+    `${c.member} — ${fmt(c.amount)} toward "${c.planTitle||'savings'}" (due ${c.dueDate})${dest}`;
   document.getElementById('contrib-note').value='';
   clearContribFile();
   document.getElementById('contrib-modal').classList.add('open');
@@ -1725,9 +2009,7 @@ window.undoChange=async function(changeId){
         }
       } else {
         // new entries record only which member+expense splits were flipped
-        for(const f of (u.flipped||[])){
-          await revertSplitUnpaid(f.expenseId,f.name);
-        }
+        for(const f of (u.flipped||[])) await revertSplitUnpaid(f.expenseId,f.name);
       }
       if(u.newExpenseId) await remove(ref(db,`expenses/${u.newExpenseId}`));
       toast('Settle up reversed ✓');
@@ -1787,18 +2069,17 @@ window.adminShrinkDb=async function(){
 
     // 3) Compress profile photos
     status.textContent='Compressing profile photos…';
-    for(const [k,p] of Object.entries(profiles)){
-      if(p&&p.photo&&p.photo.length>BIG&&p.photo.startsWith('data:image')){
-        const small=await compressDataUrl(p.photo,400,0.65);   // avatars can be tiny
-        if(small&&small.length<p.photo.length){
-          savedChars+=p.photo.length-small.length;
+    for(const [k,pr] of Object.entries(profiles)){
+      if(pr&&pr.photo&&pr.photo.length>BIG&&pr.photo.startsWith('data:image')){
+        const small=await compressDataUrl(pr.photo,400,0.65);   // avatars can be tiny
+        if(small&&small.length<pr.photo.length){
+          savedChars+=pr.photo.length-small.length;
           await set(ref(db,`profiles/${k}/photo`),small);
         }
       }
     }
 
-    // 4) Prune the audit log to the newest MAX_LOG_ENTRIES and strip any
-    //    image data lodged inside legacy undo snapshots
+    // 4) Prune the audit log and strip image data out of legacy undo snapshots
     status.textContent='Cleaning the audit log…';
     let pruned=0;
     for(const c of changes.slice(MAX_LOG_ENTRIES)){
@@ -1833,6 +2114,12 @@ let planEmoji='💰', planMembers=[];
 function renderPlanForm(){
   document.getElementById('plan-emoji-grid').innerHTML=PLAN_EMOJIS.map(e=>
     `<button class="emoji-btn ${e===planEmoji?'active':''}" onclick="selectPlanEmoji('${e}')">${e}</button>`).join('');
+  const sel=document.getElementById('plan-collector');
+  const keep=sel.value;
+  sel.innerHTML=members.length
+    ? members.map(m=>`<option value="${m.name}">${m.name}</option>`).join('')
+    : `<option value="">— add members first —</option>`;
+  if(keep&&members.some(m=>m.name===keep)) sel.value=keep;
   document.getElementById('plan-member-toggles').innerHTML=members.map(m=>`
     <button class="member-toggle ${planMembers.includes(m.name)?'active':''}" onclick="togglePlanMember('${m.name}')">
       <span class="check-circle">${planMembers.includes(m.name)?'✓':''}</span>${m.name}
@@ -1849,12 +2136,15 @@ window.togglePlanMember=function(name){
 window.updatePlanPreview=function(){
   const amt=parseFloat(document.getElementById('plan-amount').value)||0;
   const freq=document.getElementById('plan-freq').value;
+  const collector=document.getElementById('plan-collector').value;
   const prev=document.getElementById('plan-preview');
   if(!amt||!planMembers.length){ prev.style.display='none'; return; }
   prev.style.display='block';
   const per=amt*planMembers.length;
   const label=freq==='once'?'in total, once':`per ${FREQ_LABEL[freq].toLowerCase()} cycle`;
-  prev.innerHTML=`<strong>${planMembers.length}</strong> member${planMembers.length!==1?'s':''} × <strong>${fmt(amt)}</strong> = <strong>${fmt(per)}</strong> ${label} · ${planMembers.join(', ')}`;
+  prev.innerHTML=`<strong>${planMembers.length}</strong> member${planMembers.length!==1?'s':''} × <strong>${fmt(amt)}</strong> = <strong>${fmt(per)}</strong> ${label}`
+    +`<br/>${planMembers.join(', ')}`
+    +(collector?`<br/>→ all money goes to <strong>${collector}</strong>`:'');
 };
 window.resetPlanForm=function(){
   planEmoji='💰'; planMembers=[];
@@ -1870,28 +2160,31 @@ window.adminCreatePlan=async function(){
   const freq=document.getElementById('plan-freq').value;
   const startIso=document.getElementById('plan-start').value;
   const goalRaw=document.getElementById('plan-goal').value;
+  const collector=document.getElementById('plan-collector').value;
   if(!title){ toast('Give the savings a title'); return; }
   if(!amount||amount<=0){ toast('Enter a valid amount'); return; }
+  if(!collector||!members.some(m=>m.name===collector)){ toast('Pick who collects the money'); return; }
   if(!planMembers.length){ toast('Assign at least one member'); return; }
   if(!startIso){ toast('Pick a start date'); return; }
   const startTs=isoToTs(startIso);
   const plan=clean({
     title, emoji:planEmoji, amount, frequency:freq,
-    members:planMembers.slice(),
+    members:planMembers.slice(), collector,
     goal:goalRaw?parseFloat(goalRaw):null,
     startTs, nextDue:startTs, active:true,
     createdBy:isAdmin?'Admin':currentUser, createdTs:Date.now()
   });
   try{
     const pushed=await push(ref(db,'savings'),plan);
-    await logChange('plan',`Created savings plan: ${title} — ${fmt(amount)} ${FREQ_LABEL[freq].toLowerCase()}`,
+    await logChange('plan',`Created savings plan: ${title} — ${fmt(amount)} ${FREQ_LABEL[freq].toLowerCase()}, collected by ${collector}`,
       clean({planId:pushed.key}));
-    toast(`"${title}" created ✓`);
+    toast(`"${title}" created ✓ — ${collector} collects`);
     resetPlanForm();
   } catch(err){ console.error(err); toast('Error: '+(err&&err.message?err.message:'try again'),4000); }
 };
 window.adminTogglePlan=async function(planId){
   const p=savingsPlans.find(x=>x.id===planId); if(!p) return;
+  if(!canManagePlan(p)){ toast('Only the admin or collector can do that'); return; }
   try{
     await update(ref(db,`savings/${planId}`),{active:!p.active});
     toast(p.active?'Plan paused':'Plan resumed ✓');
@@ -1900,6 +2193,7 @@ window.adminTogglePlan=async function(planId){
 };
 window.adminRunPlanNow=async function(planId){
   const p=savingsPlans.find(x=>x.id===planId); if(!p) return;
+  if(!canManagePlan(p)){ toast('Only the admin or collector can do that'); return; }
   if(!confirm(`Generate one cycle of "${p.title}" right now?`)) return;
   try{
     const due=Date.now();
@@ -1908,7 +2202,7 @@ window.adminRunPlanNow=async function(planId){
     (p.members||[]).forEach(name=>{
       const key=due+'__'+memberKey(name);
       updates['contributions/'+planId+'/'+key]=clean({
-        planId, planTitle:p.title, planEmoji:p.emoji||'💰',
+        planId, planTitle:p.title, planEmoji:p.emoji||'💰', collector:p.collector||null,
         member:name, amount:p.amount, paid:false,
         dueTs:due, dueDate:ds, createdTs:due, manual:true
       });
@@ -1920,6 +2214,7 @@ window.adminRunPlanNow=async function(planId){
 };
 window.adminDeletePlan=async function(planId){
   const p=savingsPlans.find(x=>x.id===planId); if(!p) return;
+  if(!isAdmin){ toast('Only the main admin can delete a plan'); return; }
   if(!confirm(`Delete "${p.title}" and all its contribution records? This cannot be undone.`)) return;
   try{
     await remove(ref(db,`contributions/${planId}`));
@@ -1938,6 +2233,9 @@ function renderAdminPlans(){
         <div style="font-size:13px;font-weight:600">${p.emoji||'💰'} ${p.title}</div>
         <div style="font-size:11px;color:var(--text3);margin-top:2px">
           ${fmt(p.amount)} · ${FREQ_LABEL[p.frequency]||p.frequency}${next}
+        </div>
+        <div style="font-size:11px;color:var(--accent-text);margin-top:1px">
+          🏦 collected by ${p.collector||'— unassigned —'}
         </div>
         <div style="font-size:11px;color:var(--text3);margin-top:1px">
           ${(p.members||[]).join(', ')||'no members'} · ${items.length} entries · ${fmt(saved)} in${pending>0?`, ${fmt(pending)} due`:''}
@@ -2054,8 +2352,6 @@ window.confirmMarkPaid=async function(){
   if(proofFileB64) updated[idx].proofImg=proofFileB64;
   try{
     await update(ref(db,`expenses/${modalExpenseId}`),{splits:updated});
-    // Undo data holds only the ids — never a splits snapshot, which would
-    // copy every proof image into the audit log a second time.
     await logChange('paid',`${modalMemberName} marked paid on: ${expense.desc} — ${fmt(updated[idx].amount)}`,
       {expenseId:modalExpenseId,member:modalMemberName});
     toast(`${modalMemberName} marked as paid ✓`); closeModal();
@@ -2068,7 +2364,7 @@ window.deleteExpense=async function(expenseId){
   if(!confirm('Delete this expense?')) return;
   const expense=expenses.find(e=>e.id===expenseId);
   if(!expense){ toast('Expense not found'); return; }
-
+  
   try{
     // Copy the expense, drop the local-only `id`, and strip any undefined
     // fields (Firebase rejects writes containing undefined).
@@ -2099,9 +2395,21 @@ window.deleteExpense=async function(expenseId){
 // ── Boot ───────────────────────────────────────────────────────
 document.getElementById('plan-amount').addEventListener('input',updatePlanPreview);
 document.getElementById('plan-freq').addEventListener('change',updatePlanPreview);
+document.getElementById('plan-collector').addEventListener('change',updatePlanPreview);
 document.getElementById('plan-title').addEventListener('keydown',e=>{ if(e.key==='Enter') adminCreatePlan(); });
 
-console.log('%cHouseSplit v3.1 — compressed images, capped audit log, error reporting','color:#3b82f6;font-weight:bold');
+// Search: debounced so typing stays smooth even with hundreds of expenses
+let searchTimer=null;
+const searchEl=document.getElementById('search-input');
+searchEl.addEventListener('input',e=>{
+  const v=e.target.value;
+  document.getElementById('search-clear').classList.toggle('show',!!v);
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>{ searchQ=v.trim(); renderDashboard(); },160);
+});
+searchEl.addEventListener('keydown',e=>{ if(e.key==='Escape') clearSearch(); });
+
+console.log('%cHouseSplit v3.2 — search, my-expenses, collectors, compressed images','color:#3b82f6;font-weight:bold');
 startListening();
 // re-check for due cycles every 5 minutes while the app stays open
 setInterval(generateDueContributions,5*60*1000);
